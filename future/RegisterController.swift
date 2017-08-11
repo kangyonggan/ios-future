@@ -20,6 +20,8 @@ class RegisterController: UIViewController {
     
     @IBOutlet weak var registerBtn: UIButton!
     
+    var isShowPassword = false;
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         
@@ -82,6 +84,17 @@ class RegisterController: UIViewController {
         ViewUtil.addLeftIcon(textField: authCodeInput, icon: "authCode");
         ViewUtil.addLeftIcon(textField: passwordInput, icon: "password");
         
+        // 密码框右侧图标
+        let rightView = UIImageView(frame: CGRect(x: passwordInput.frame.width - 30, y: 0, width: 20, height: 20));
+        rightView.image = UIImage(named: "eye");
+        passwordInput.rightView = rightView;
+        passwordInput.rightViewMode = UITextFieldViewMode.always;
+        
+        // 查看密码事件监听/////添加tapGuestureRecognizer手势
+        rightView.isUserInteractionEnabled = true;
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:)));
+        rightView.addGestureRecognizer(tapGR)
+        
         // 获取验证码按钮
         authCodeBtn.layer.cornerRadius = 5;
         authCodeBtn.layer.masksToBounds = true;
@@ -93,5 +106,18 @@ class RegisterController: UIViewController {
         
         // 焦点
         usernameInput.becomeFirstResponder();
+    }
+    
+    // 手势处理函数
+    func tapHandler(sender: UITapGestureRecognizer) {
+        if isShowPassword {
+            (passwordInput.rightView as! UIImageView).image = UIImage(named: "eye");
+            passwordInput.isSecureTextEntry = true;
+        } else {
+            (passwordInput.rightView as! UIImageView).image = UIImage(named: "eyeSelected");
+            passwordInput.isSecureTextEntry = false;
+        }
+        
+        isShowPassword = !isShowPassword;
     }
 }

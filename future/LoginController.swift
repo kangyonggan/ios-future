@@ -24,6 +24,8 @@ class LoginController: UIViewController {
     
     var isLogout: Bool = false;
     
+    var isShowPassword = false;
+    
     let dictionaryDao = DictionaryDao();
     
     override func viewDidLoad() {
@@ -155,6 +157,17 @@ class LoginController: UIViewController {
         ViewUtil.addLeftIcon(textField: usernameInput, icon: "mobile");
         ViewUtil.addLeftIcon(textField: passwordInput, icon: "password");
         
+        // 密码框右侧图标
+        let rightView = UIImageView(frame: CGRect(x: passwordInput.frame.width - 30, y: 0, width: 20, height: 20));
+        rightView.image = UIImage(named: "eye");
+        passwordInput.rightView = rightView;
+        passwordInput.rightViewMode = UITextFieldViewMode.always;
+        
+        // 查看密码事件监听/////添加tapGuestureRecognizer手势
+        rightView.isUserInteractionEnabled = true;
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(tapHandler(sender:)));
+        rightView.addGestureRecognizer(tapGR)
+        
         // 登录按钮
         loginBtn.layer.cornerRadius = 20;
         loginBtn.layer.borderWidth = 1;
@@ -165,6 +178,19 @@ class LoginController: UIViewController {
         let line = UIView(frame: CGRect(x: bottomView.frame.width / 2, y: 0, width: 1, height: bottomView.frame.height));
         line.backgroundColor = UIColor.gray;
         bottomView.addSubview(line);
+    }
+    
+    // 手势处理函数
+    func tapHandler(sender: UITapGestureRecognizer) {
+        if isShowPassword {
+            (passwordInput.rightView as! UIImageView).image = UIImage(named: "eye");
+            passwordInput.isSecureTextEntry = true;
+        } else {
+            (passwordInput.rightView as! UIImageView).image = UIImage(named: "eyeSelected");
+            passwordInput.isSecureTextEntry = false;
+        }
+        
+        isShowPassword = !isShowPassword;
     }
 
     // 播放启动画面动画
