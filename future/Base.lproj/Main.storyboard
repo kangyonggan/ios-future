@@ -287,6 +287,9 @@
                                 <state key="normal" title="获取验证码">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="getAuthCode:" destination="6Nx-fi-wyA" eventType="touchUpInside" id="6go-wU-7gU"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="注册账号表示您已同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F84-c7-C4D">
                                 <rect key="frame" x="74" y="227" width="130" height="25"/>
@@ -313,6 +316,9 @@
                                 <state key="normal" title="注册">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="register:" destination="6Nx-fi-wyA" eventType="touchUpInside" id="Bhn-Sb-5mM"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -329,6 +335,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gbR-b3-hdY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="381.60000000000002" y="1141.9790104947526"/>
+        </scene>
+        <!--注册成功-->
+        <scene sceneID="dlw-2U-s0v">
+            <objects>
+                <viewController storyboardIdentifier="registerSuccessController" id="rmf-AS-7pn" customClass="RegisterSuccessController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OeE-EL-1jv"/>
+                        <viewControllerLayoutGuide type="bottom" id="gF3-SM-wx4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qjs-k3-e3j">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="success" translatesAutoresizingMaskIntoConstraints="NO" id="TUi-9U-3XR">
+                                <rect key="frame" x="127" y="70" width="120" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="恭喜您注册成功" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPB-g8-N3L">
+                                <rect key="frame" x="113" y="214" width="149" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUN-4R-TZc">
+                                <rect key="frame" x="32" y="306" width="310" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99858456849999999" green="0.3324358463" blue="0.21369606259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="完善个人资料">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="register:" destination="6Nx-fi-wyA" eventType="touchUpInside" id="CEJ-qR-4GF"/>
+                                    <action selector="showUserInfo:" destination="rmf-AS-7pn" eventType="touchUpInside" id="idO-zI-REf"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="注册成功" id="scm-eM-1kQ"/>
+                    <connections>
+                        <outlet property="userInfoBtn" destination="DUN-4R-TZc" id="sZc-VW-9v4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="me8-0A-Dru" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1290.4000000000001" y="1218.440779610195"/>
         </scene>
         <!--未来服务协议-->
         <scene sceneID="cof-qG-Zpg">
@@ -595,7 +648,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I1k-G4-bHT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2309.5999999999999" y="1265.217391304348"/>
+            <point key="canvasLocation" x="2638" y="1304"/>
         </scene>
         <!--设置-->
         <scene sceneID="bWd-7o-BhZ">
@@ -624,7 +677,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yGW-lh-RK1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1837" y="2044"/>
+            <point key="canvasLocation" x="2310" y="2125"/>
         </scene>
         <!--首页-->
         <scene sceneID="HfV-D1-OKk">
@@ -680,5 +733,6 @@
         <image name="other" width="20" height="20"/>
         <image name="right" width="120" height="120"/>
         <image name="rightDark" width="120" height="120"/>
+        <image name="success" width="120" height="120"/>
     </resources>
 </document>

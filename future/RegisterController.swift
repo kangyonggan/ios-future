@@ -10,6 +10,9 @@ import UIKit
 
 class RegisterController: UIViewController {
     
+    let registerUrl = "m/register";
+    let authCodeUrl = "m/sms/send";
+    
     @IBOutlet weak var usernameInput: UITextField!
     
     @IBOutlet weak var authCodeInput: UITextField!
@@ -21,6 +24,8 @@ class RegisterController: UIViewController {
     @IBOutlet weak var registerBtn: UIButton!
     
     var isShowPassword = false;
+    
+    let dictionaryDao = DictionaryDao();
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -66,6 +71,46 @@ class RegisterController: UIViewController {
         } else {
             registerBtn.isEnabled = false;
             registerBtn.backgroundColor = UIColor.lightGray;
+        }
+    }
+    
+    // 注册
+    @IBAction func register(_ sender: Any) {
+        let username =  usernameInput.text!;
+        let password = passwordInput.text!;
+        let authCode = authCodeInput.text!;
+        
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + registerUrl, params: ["username": username, "password":password, "authCode": authCode]);
+        
+        if result.0 {
+            // 删除老的token
+            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);
+            
+            // 保存token
+            let dict = MyDictionary();
+            dict.key = AppConstants.KEY_TOKEN;
+            dict.value = result.2;
+            dict.type = AppConstants.DICTIONERY_TYPE_COMMON;
+            dictionaryDao.save(dictionary: dict);
+            
+            // 跳转到注册成功界面
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "registerSuccessController");
+            self.navigationController?.pushViewController(vc!, animated: true);
+        } else {
+            ToastUtil.show(message: result.1);
+        }
+    }
+    
+    // 获取验证码
+    @IBAction func getAuthCode(_ sender: Any) {
+        let username =  usernameInput.text!;
+        
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "REGISTER"]);
+        
+        if result.0 {
+            ToastUtil.show(message: "获取验证码成功");
+        } else {
+            ToastUtil.show(message: result.1);
         }
     }
     

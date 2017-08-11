@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Toaster
-import Just
 
 class LoginController: UIViewController {
+    
+    let loginUrl = "m/login";
 
     @IBOutlet weak var imageView: UIImageView!
     
@@ -41,7 +41,7 @@ class LoginController: UIViewController {
                 // 本地token不存在
                 launchAnimation();
             } else {
-                let result = login(username: "", password: "", token: dict!.value!);
+                let result =  HttpUtil.sendPost(url: AppConstants.DOMAIN + loginUrl, params: ["token": dict!.value!]);
                 if result.0 {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
                     self.navigationController?.pushViewController(vc!, animated: false);
@@ -93,7 +93,7 @@ class LoginController: UIViewController {
         let username =  usernameInput.text!;
         let password = passwordInput.text!;
         
-        let result = login(username: username, password: password, token: "");
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + loginUrl, params: ["username": username, "password":password]);
         
         if result.0 {
             // 删除老的token
@@ -109,35 +109,9 @@ class LoginController: UIViewController {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
             self.navigationController?.pushViewController(vc!, animated: true);
         } else {
-            Toast(text: result.1).show();
-            
+            ToastUtil.show(message: result.1);
         }
         
-    }
-    
-    // 登录请求
-    func login(username: String, password: String, token: String) -> (Bool, String, String) {
-        var res = (false, "", "");
-        
-        let result = Just.post("http://127.0.0.1:8080/m/login", data: ["username": username, "password":password, "token": token]);
-        
-        if result.ok {
-            let response = result.json as! NSDictionary;
-            let respCo = response["respCo"] as! String;
-            let respMsg = response["respMsg"] as! String;
-            let token = response["token"] as! String;
-            
-            res.1 = respMsg;
-            res.2 = token;
-            
-            if respCo == "0000" {
-                res.0 = true;
-            }
-        } else {
-            res.1 = "通讯异常，请稍后再试";
-        }
-        
-        return res;
     }
     
     // 初始化界面

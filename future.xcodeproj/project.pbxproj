@@ -27,6 +27,8 @@
 		111A7CE11F3C34D900A90482 /* ContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CE01F3C34D900A90482 /* ContactsController.swift */; };
 		111A7CE31F3C4E9E00A90482 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CE21F3C4E9E00A90482 /* SettingController.swift */; };
 		111A7D111F3C8B0100A90482 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7D101F3C8B0100A90482 /* HttpUtil.swift */; };
+		111A7D161F3D803B00A90482 /* ToastUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7D151F3D803B00A90482 /* ToastUtil.swift */; };
+		111A7D181F3D814100A90482 /* RegisterSuccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7D171F3D814100A90482 /* RegisterSuccessController.swift */; };
 		8DC06CB3E37A704F75F1D26F /* Pods_future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D8865FEB7D17CE602D349C5 /* Pods_future.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +55,8 @@
 		111A7CE01F3C34D900A90482 /* ContactsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsController.swift; sourceTree = "<group>"; };
 		111A7CE21F3C4E9E00A90482 /* SettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		111A7D101F3C8B0100A90482 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
+		111A7D151F3D803B00A90482 /* ToastUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastUtil.swift; sourceTree = "<group>"; };
+		111A7D171F3D814100A90482 /* RegisterSuccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterSuccessController.swift; sourceTree = "<group>"; };
 		11FFACA6D23EF07F502986C8 /* Pods-future.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.release.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.release.xcconfig"; sourceTree = "<group>"; };
 		3D8865FEB7D17CE602D349C5 /* Pods_future.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_future.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8342076166107CD9B2FD60A4 /* Pods-future.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.debug.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.debug.xcconfig"; sourceTree = "<group>"; };
@@ -125,6 +129,7 @@
 			children = (
 				111A7CD11F3BF5D800A90482 /* ViewUtil.swift */,
 				111A7D101F3C8B0100A90482 /* HttpUtil.swift */,
+				111A7D151F3D803B00A90482 /* ToastUtil.swift */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 				111A7CCF1F3BF31400A90482 /* RegisterController.swift */,
 				111A7CD31F3C0ED400A90482 /* ForgotController.swift */,
 				111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */,
+				111A7D171F3D814100A90482 /* RegisterSuccessController.swift */,
 			);
 			name = login;
 			sourceTree = "<group>";
@@ -340,7 +346,9 @@
 				111A7CD81F3C28F400A90482 /* MyController.swift in Sources */,
 				111A7CE11F3C34D900A90482 /* ContactsController.swift in Sources */,
 				111A7CB01F3AF46400A90482 /* LoginController.swift in Sources */,
+				111A7D161F3D803B00A90482 /* ToastUtil.swift in Sources */,
 				111A7CCE1F3BF21800A90482 /* AppConstants.swift in Sources */,
+				111A7D181F3D814100A90482 /* RegisterSuccessController.swift in Sources */,
 				111A7D111F3C8B0100A90482 /* HttpUtil.swift in Sources */,
 				111A7CE31F3C4E9E00A90482 /* SettingController.swift in Sources */,
 				111A7CD21F3BF5D800A90482 /* ViewUtil.swift in Sources */,
