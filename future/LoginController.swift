@@ -33,6 +33,11 @@ class LoginController: UIViewController {
     
         initView();
         
+        tryLogin();
+    }
+    
+    // 尝试登录
+    func tryLogin() {
         if !isLogout {
             // 取出本地token，尝试直接登录
             let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);

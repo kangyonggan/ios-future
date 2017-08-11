@@ -123,49 +123,52 @@
         <!--设置登录密码-->
         <scene sceneID="zmk-RE-e8X">
             <objects>
-                <viewController id="CNS-oX-gAK" customClass="UpdatePasswordController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="updatePasswordSuccessController" id="CNS-oX-gAK" customClass="UpdatePasswordSuccessController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Se-NG-v3X"/>
                         <viewControllerLayoutGuide type="bottom" id="QFT-Z3-boI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YyD-p2-8xT">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入密码" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Hcv-1J-nTu">
-                                <rect key="frame" x="47" y="38" width="280" height="30"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="success" translatesAutoresizingMaskIntoConstraints="NO" id="aEl-1y-3wn">
+                                <rect key="frame" x="127" y="80" width="120" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
-                                <connections>
-                                    <action selector="editPassword:" destination="6Nx-fi-wyA" eventType="editingChanged" id="W2k-BX-2mb"/>
-                                    <action selector="editPassword:" destination="CNS-oX-gAK" eventType="editingChanged" id="y7K-kq-OhX"/>
-                                    <action selector="endInputPassword:" destination="CNS-oX-gAK" eventType="editingDidEndOnExit" id="cas-YC-uCw"/>
-                                </connections>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDT-eT-Ieb">
-                                <rect key="frame" x="32" y="113" width="310" height="40"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="您已找回密码，请重新登录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1Q-Vn-hep">
+                                <rect key="frame" x="64" y="227" width="246" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="完成">
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1w4-n7-b1K">
+                                <rect key="frame" x="32" y="313" width="310" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99858456849999999" green="0.3324358463" blue="0.21369606259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="重新登录">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="register:" destination="6Nx-fi-wyA" eventType="touchUpInside" id="cgq-oR-OYc"/>
+                                    <action selector="relogin:" destination="CNS-oX-gAK" eventType="touchUpInside" id="J3m-N7-X8q"/>
+                                    <action selector="showUserInfo:" destination="rmf-AS-7pn" eventType="touchUpInside" id="PLT-qE-GT2"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="设置登录密码" id="fdH-Yg-7wC"/>
                     <connections>
-                        <outlet property="finishBtn" destination="PDT-eT-Ieb" id="999-h5-3u0"/>
-                        <outlet property="passwordInput" destination="Hcv-1J-nTu" id="34p-9w-tCN"/>
+                        <outlet property="reloginBtn" destination="1w4-n7-b1K" id="K5O-7M-eMk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xsx-x4-cOy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-727" y="1899"/>
+            <point key="canvasLocation" x="-727.20000000000005" y="1898.5007496251876"/>
         </scene>
-        <!--验证手机号码-->
+        <!--找回密码-->
         <scene sceneID="IUJ-G2-TJe">
             <objects>
                 <viewController id="3fV-ME-Xeg" customClass="ForgotController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
@@ -202,38 +205,56 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OTK-Q3-cFt">
-                                <rect key="frame" x="237" y="127" width="90" height="30"/>
+                                <rect key="frame" x="236" y="126" width="91" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99858456849999999" green="0.3324358463" blue="0.21369606259999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="获取验证码">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="getAuthCode:" destination="3fV-ME-Xeg" eventType="touchUpInside" id="VK3-FR-m66"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JFx-Jw-fZB">
-                                <rect key="frame" x="32" y="194" width="310" height="40"/>
+                                <rect key="frame" x="32" y="275" width="310" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="下一步">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="CNS-oX-gAK" kind="push" id="x9Y-Dc-LT6"/>
+                                    <action selector="nextStep:" destination="3fV-ME-Xeg" eventType="touchUpInside" id="zlL-km-jDO"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入新密码" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9ki-ty-mhv">
+                                <rect key="frame" x="47" y="191" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <connections>
+                                    <action selector="didEndInputPassword:" destination="3fV-ME-Xeg" eventType="editingDidEndOnExit" id="a7w-8s-BYp"/>
+                                    <action selector="editPassword:" destination="3fV-ME-Xeg" eventType="editingDidEnd" id="0No-qp-Fbi"/>
+                                    <action selector="editPassword:" destination="6Nx-fi-wyA" eventType="editingChanged" id="2oF-2U-sCv"/>
+                                    <action selector="editPassword:" destination="CNS-oX-gAK" eventType="editingChanged" id="FJF-VI-haA"/>
+                                    <action selector="endInputPassword:" destination="CNS-oX-gAK" eventType="editingDidEndOnExit" id="BBz-va-qAS"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="验证手机号码" id="Tw5-jS-9kE"/>
+                    <navigationItem key="navigationItem" title="找回密码" id="Tw5-jS-9kE"/>
                     <connections>
                         <outlet property="authCodeBtn" destination="OTK-Q3-cFt" id="HOK-FX-NEF"/>
                         <outlet property="authCodeInput" destination="yIu-1U-isX" id="MLh-p4-kOX"/>
                         <outlet property="nextStepBtn" destination="JFx-Jw-fZB" id="J9t-vr-4p0"/>
+                        <outlet property="passwordInput" destination="9ki-ty-mhv" id="SaN-NA-22W"/>
                         <outlet property="usernameInput" destination="n7a-e2-Uxi" id="h3g-5z-YUh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11N-XM-Lx5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-726" y="1142"/>
+            <point key="canvasLocation" x="-727.20000000000005" y="1141.9790104947526"/>
         </scene>
         <!--注册-->
         <scene sceneID="kba-LU-cOe">
@@ -281,9 +302,9 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vZ-U1-ihc">
-                                <rect key="frame" x="237" y="112" width="90" height="30"/>
+                                <rect key="frame" x="236" y="112" width="91" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.9985845685005188" green="0.33243584632873535" blue="0.21369606256484985" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="获取验证码">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>

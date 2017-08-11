@@ -25,6 +25,9 @@ class RegisterController: UIViewController {
     
     var isShowPassword = false;
     
+    var timer: Timer?;
+    var time = 0;
+    
     let dictionaryDao = DictionaryDao();
     
     override func viewDidLoad() {
@@ -109,8 +112,27 @@ class RegisterController: UIViewController {
         
         if result.0 {
             ToastUtil.show(message: "获取验证码成功");
+            
+            time = 0;
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateAuthCodeBtn), userInfo: nil, repeats: true);
+            authCodeBtn.isEnabled = false;
+            authCodeBtn.backgroundColor = UIColor.lightGray;
         } else {
             ToastUtil.show(message: result.1);
+        }
+    }
+    
+    // 更新获取验证码按钮
+    func updateAuthCodeBtn() {
+        time += 1;
+        authCodeBtn.setTitle("\(60-time)秒", for: UIControlState.normal);
+        
+        if (time > 60) {
+            time = 0;
+            authCodeBtn.isEnabled = true;
+            authCodeBtn.backgroundColor = AppConstants.MASTER_COLOR;
+            timer?.invalidate();
+            authCodeBtn.setTitle("重新获取", for: UIControlState.normal);
         }
     }
     
@@ -143,6 +165,7 @@ class RegisterController: UIViewController {
         // 获取验证码按钮
         authCodeBtn.layer.cornerRadius = 5;
         authCodeBtn.layer.masksToBounds = true;
+        authCodeBtn.backgroundColor = AppConstants.MASTER_COLOR;
         
         // 注册按钮
         registerBtn.layer.cornerRadius = 20;

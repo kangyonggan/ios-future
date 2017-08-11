@@ -19,7 +19,7 @@
 		111A7CD01F3BF31500A90482 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CCF1F3BF31400A90482 /* RegisterController.swift */; };
 		111A7CD21F3BF5D800A90482 /* ViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD11F3BF5D800A90482 /* ViewUtil.swift */; };
 		111A7CD41F3C0ED400A90482 /* ForgotController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD31F3C0ED400A90482 /* ForgotController.swift */; };
-		111A7CD61F3C107D00A90482 /* UpdatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */; };
+		111A7CD61F3C107D00A90482 /* UpdatePasswordSuccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD51F3C107D00A90482 /* UpdatePasswordSuccessController.swift */; };
 		111A7CD81F3C28F400A90482 /* MyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD71F3C28F400A90482 /* MyController.swift */; };
 		111A7CDB1F3C31DA00A90482 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CDA1F3C31DA00A90482 /* MyTabBarController.swift */; };
 		111A7CDD1F3C348F00A90482 /* OtherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CDC1F3C348F00A90482 /* OtherController.swift */; };
@@ -47,7 +47,7 @@
 		111A7CCF1F3BF31400A90482 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		111A7CD11F3BF5D800A90482 /* ViewUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUtil.swift; sourceTree = "<group>"; };
 		111A7CD31F3C0ED400A90482 /* ForgotController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotController.swift; sourceTree = "<group>"; };
-		111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordController.swift; sourceTree = "<group>"; };
+		111A7CD51F3C107D00A90482 /* UpdatePasswordSuccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordSuccessController.swift; sourceTree = "<group>"; };
 		111A7CD71F3C28F400A90482 /* MyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyController.swift; sourceTree = "<group>"; };
 		111A7CDA1F3C31DA00A90482 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		111A7CDC1F3C348F00A90482 /* OtherController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherController.swift; sourceTree = "<group>"; };
@@ -188,7 +188,7 @@
 				111A7CAF1F3AF46400A90482 /* LoginController.swift */,
 				111A7CCF1F3BF31400A90482 /* RegisterController.swift */,
 				111A7CD31F3C0ED400A90482 /* ForgotController.swift */,
-				111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */,
+				111A7CD51F3C107D00A90482 /* UpdatePasswordSuccessController.swift */,
 				111A7D171F3D814100A90482 /* RegisterSuccessController.swift */,
 			);
 			name = login;
@@ -359,7 +359,7 @@
 				111A7CD01F3BF31500A90482 /* RegisterController.swift in Sources */,
 				111A7CAE1F3AF46400A90482 /* AppDelegate.swift in Sources */,
 				111A7CDF1F3C34AC00A90482 /* IndexController.swift in Sources */,
-				111A7CD61F3C107D00A90482 /* UpdatePasswordController.swift in Sources */,
+				111A7CD61F3C107D00A90482 /* UpdatePasswordSuccessController.swift in Sources */,
 				111A7CD41F3C0ED400A90482 /* ForgotController.swift in Sources */,
 				111A7CCC1F3AF51D00A90482 /* DictionaryDao.swift in Sources */,
 			);
