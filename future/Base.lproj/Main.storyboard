@@ -219,7 +219,7 @@
                                 <rect key="frame" x="32" y="275" width="310" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="下一步">
+                                <state key="normal" title="提交">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -234,8 +234,8 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <action selector="didEndInputPassword:" destination="3fV-ME-Xeg" eventType="editingDidEndOnExit" id="a7w-8s-BYp"/>
-                                    <action selector="editPassword:" destination="3fV-ME-Xeg" eventType="editingDidEnd" id="0No-qp-Fbi"/>
                                     <action selector="editPassword:" destination="6Nx-fi-wyA" eventType="editingChanged" id="2oF-2U-sCv"/>
+                                    <action selector="editPassword:" destination="3fV-ME-Xeg" eventType="editingChanged" id="6oQ-g8-C3C"/>
                                     <action selector="editPassword:" destination="CNS-oX-gAK" eventType="editingChanged" id="FJF-VI-haA"/>
                                     <action selector="endInputPassword:" destination="CNS-oX-gAK" eventType="editingDidEndOnExit" id="BBz-va-qAS"/>
                                 </connections>

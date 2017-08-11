@@ -83,6 +83,21 @@ class RegisterController: UIViewController {
         let password = passwordInput.text!;
         let authCode = authCodeInput.text!;
         
+        if username.characters.count != 11 {
+            ToastUtil.show(message: "请输入正确的手机号");
+            return;
+        }
+        
+        if authCode.characters.count != 4 {
+            ToastUtil.show(message: "验证码的长度必须是4位");
+            return;
+        }
+        
+        if password.characters.count < 8 || password.characters.count > 20 {
+            ToastUtil.show(message: "密码长度为8-20位");
+            return;
+        }
+        
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + registerUrl, params: ["username": username, "password":password, "authCode": authCode]);
         
         if result.0 {
@@ -107,6 +122,10 @@ class RegisterController: UIViewController {
     // 获取验证码
     @IBAction func getAuthCode(_ sender: Any) {
         let username =  usernameInput.text!;
+        if username.characters.count != 11 {
+            ToastUtil.show(message: "请输入正确的手机号");
+            return;
+        }
         
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "REGISTER"]);
         

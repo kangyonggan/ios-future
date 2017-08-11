@@ -77,6 +77,10 @@ class ForgotController: UIViewController {
     // 获取验证码
     @IBAction func getAuthCode(_ sender: Any) {
         let username =  usernameInput.text!;
+        if username.characters.count != 11 {
+            ToastUtil.show(message: "请输入正确的手机号");
+            return;
+        }
         
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "FORGOT"]);
         
@@ -111,6 +115,21 @@ class ForgotController: UIViewController {
         let username =  usernameInput.text!;
         let authCode = authCodeInput.text!;
         let password = passwordInput.text!;
+        
+        if username.characters.count != 11 {
+            ToastUtil.show(message: "请输入正确的手机号");
+            return;
+        }
+        
+        if authCode.characters.count != 4 {
+            ToastUtil.show(message: "验证码的长度必须是4位");
+            return;
+        }
+        
+        if password.characters.count < 8 || password.characters.count > 20 {
+            ToastUtil.show(message: "密码长度为8-20位");
+            return;
+        }
         
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + forgotUrl, params: ["username": username, "authCode": authCode, "password": password]);
         

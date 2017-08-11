@@ -98,6 +98,16 @@ class LoginController: UIViewController {
         let username =  usernameInput.text!;
         let password = passwordInput.text!;
         
+        if username.characters.count != 11 {
+            ToastUtil.show(message: "请输入正确的手机号");
+            return;
+        }
+        
+        if password.characters.count < 8 || password.characters.count > 20 {
+            ToastUtil.show(message: "密码长度为8-20位");
+            return;
+        }
+        
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + loginUrl, params: ["username": username, "password":password]);
         
         if result.0 {
