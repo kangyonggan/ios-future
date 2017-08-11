@@ -8,22 +8,54 @@
 
 /* Begin PBXBuildFile section */
 		111A7CAE1F3AF46400A90482 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CAD1F3AF46400A90482 /* AppDelegate.swift */; };
-		111A7CB01F3AF46400A90482 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CAF1F3AF46400A90482 /* ViewController.swift */; };
+		111A7CB01F3AF46400A90482 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CAF1F3AF46400A90482 /* LoginController.swift */; };
 		111A7CB31F3AF46400A90482 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 111A7CB11F3AF46400A90482 /* Main.storyboard */; };
 		111A7CB61F3AF46400A90482 /* future.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CB41F3AF46400A90482 /* future.xcdatamodeld */; };
 		111A7CB81F3AF46400A90482 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 111A7CB71F3AF46400A90482 /* Assets.xcassets */; };
 		111A7CBB1F3AF46400A90482 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 111A7CB91F3AF46400A90482 /* LaunchScreen.storyboard */; };
+		111A7CCA1F3AF50300A90482 /* MyDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CC91F3AF50300A90482 /* MyDictionary.swift */; };
+		111A7CCC1F3AF51D00A90482 /* DictionaryDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CCB1F3AF51D00A90482 /* DictionaryDao.swift */; };
+		111A7CCE1F3BF21800A90482 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CCD1F3BF21800A90482 /* AppConstants.swift */; };
+		111A7CD01F3BF31500A90482 /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CCF1F3BF31400A90482 /* RegisterController.swift */; };
+		111A7CD21F3BF5D800A90482 /* ViewUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD11F3BF5D800A90482 /* ViewUtil.swift */; };
+		111A7CD41F3C0ED400A90482 /* ForgotController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD31F3C0ED400A90482 /* ForgotController.swift */; };
+		111A7CD61F3C107D00A90482 /* UpdatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */; };
+		111A7CD81F3C28F400A90482 /* MyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CD71F3C28F400A90482 /* MyController.swift */; };
+		111A7CDB1F3C31DA00A90482 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CDA1F3C31DA00A90482 /* MyTabBarController.swift */; };
+		111A7CDD1F3C348F00A90482 /* OtherController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CDC1F3C348F00A90482 /* OtherController.swift */; };
+		111A7CDF1F3C34AC00A90482 /* IndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CDE1F3C34AC00A90482 /* IndexController.swift */; };
+		111A7CE11F3C34D900A90482 /* ContactsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CE01F3C34D900A90482 /* ContactsController.swift */; };
+		111A7CE31F3C4E9E00A90482 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7CE21F3C4E9E00A90482 /* SettingController.swift */; };
+		111A7D111F3C8B0100A90482 /* HttpUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111A7D101F3C8B0100A90482 /* HttpUtil.swift */; };
+		8DC06CB3E37A704F75F1D26F /* Pods_future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D8865FEB7D17CE602D349C5 /* Pods_future.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		111A7CAA1F3AF46400A90482 /* future.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = future.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		111A7CAA1F3AF46400A90482 /* 未来.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "未来.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		111A7CAD1F3AF46400A90482 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		111A7CAF1F3AF46400A90482 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		111A7CAF1F3AF46400A90482 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		111A7CB21F3AF46400A90482 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		111A7CB51F3AF46400A90482 /* future.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = future.xcdatamodel; sourceTree = "<group>"; };
 		111A7CB71F3AF46400A90482 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		111A7CBA1F3AF46400A90482 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		111A7CBC1F3AF46400A90482 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		111A7CC91F3AF50300A90482 /* MyDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyDictionary.swift; sourceTree = "<group>"; };
+		111A7CCB1F3AF51D00A90482 /* DictionaryDao.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryDao.swift; sourceTree = "<group>"; };
+		111A7CCD1F3BF21800A90482 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		111A7CCF1F3BF31400A90482 /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
+		111A7CD11F3BF5D800A90482 /* ViewUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewUtil.swift; sourceTree = "<group>"; };
+		111A7CD31F3C0ED400A90482 /* ForgotController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotController.swift; sourceTree = "<group>"; };
+		111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordController.swift; sourceTree = "<group>"; };
+		111A7CD71F3C28F400A90482 /* MyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyController.swift; sourceTree = "<group>"; };
+		111A7CDA1F3C31DA00A90482 /* MyTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
+		111A7CDC1F3C348F00A90482 /* OtherController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherController.swift; sourceTree = "<group>"; };
+		111A7CDE1F3C34AC00A90482 /* IndexController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexController.swift; sourceTree = "<group>"; };
+		111A7CE01F3C34D900A90482 /* ContactsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsController.swift; sourceTree = "<group>"; };
+		111A7CE21F3C4E9E00A90482 /* SettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
+		111A7D101F3C8B0100A90482 /* HttpUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpUtil.swift; sourceTree = "<group>"; };
+		11FFACA6D23EF07F502986C8 /* Pods-future.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.release.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.release.xcconfig"; sourceTree = "<group>"; };
+		3D8865FEB7D17CE602D349C5 /* Pods_future.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_future.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8342076166107CD9B2FD60A4 /* Pods-future.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.debug.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DC06CB3E37A704F75F1D26F /* Pods_future.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,13 +75,15 @@
 			children = (
 				111A7CAC1F3AF46400A90482 /* future */,
 				111A7CAB1F3AF46400A90482 /* Products */,
+				9149F13B28CCD23936C8B921 /* Pods */,
+				46E9997F2B3095D3D53CA3D1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		111A7CAB1F3AF46400A90482 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				111A7CAA1F3AF46400A90482 /* future.app */,
+				111A7CAA1F3AF46400A90482 /* 未来.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -56,15 +91,118 @@
 		111A7CAC1F3AF46400A90482 /* future */ = {
 			isa = PBXGroup;
 			children = (
-				111A7CAD1F3AF46400A90482 /* AppDelegate.swift */,
-				111A7CAF1F3AF46400A90482 /* ViewController.swift */,
-				111A7CB11F3AF46400A90482 /* Main.storyboard */,
-				111A7CB71F3AF46400A90482 /* Assets.xcassets */,
-				111A7CB91F3AF46400A90482 /* LaunchScreen.storyboard */,
-				111A7CBC1F3AF46400A90482 /* Info.plist */,
-				111A7CB41F3AF46400A90482 /* future.xcdatamodeld */,
+				111A7CC81F3AF4D700A90482 /* model */,
+				111A7CC71F3AF4B400A90482 /* resources */,
+				111A7CC61F3AF4AB00A90482 /* core */,
+				111A7CC51F3AF48100A90482 /* interface */,
+				111A7CC41F3AF47A00A90482 /* util */,
+				111A7CC31F3AF47500A90482 /* dao */,
+				111A7CC21F3AF46B00A90482 /* controller */,
 			);
 			path = future;
+			sourceTree = "<group>";
+		};
+		111A7CC21F3AF46B00A90482 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CE51F3C559900A90482 /* login */,
+				111A7CE41F3C50E200A90482 /* index */,
+			);
+			name = controller;
+			sourceTree = "<group>";
+		};
+		111A7CC31F3AF47500A90482 /* dao */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CB41F3AF46400A90482 /* future.xcdatamodeld */,
+				111A7CCB1F3AF51D00A90482 /* DictionaryDao.swift */,
+			);
+			name = dao;
+			sourceTree = "<group>";
+		};
+		111A7CC41F3AF47A00A90482 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CD11F3BF5D800A90482 /* ViewUtil.swift */,
+				111A7D101F3C8B0100A90482 /* HttpUtil.swift */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
+		111A7CC51F3AF48100A90482 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CB91F3AF46400A90482 /* LaunchScreen.storyboard */,
+				111A7CB11F3AF46400A90482 /* Main.storyboard */,
+			);
+			name = interface;
+			sourceTree = "<group>";
+		};
+		111A7CC61F3AF4AB00A90482 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CBC1F3AF46400A90482 /* Info.plist */,
+				111A7CAD1F3AF46400A90482 /* AppDelegate.swift */,
+			);
+			name = core;
+			sourceTree = "<group>";
+		};
+		111A7CC71F3AF4B400A90482 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CB71F3AF46400A90482 /* Assets.xcassets */,
+			);
+			name = resources;
+			sourceTree = "<group>";
+		};
+		111A7CC81F3AF4D700A90482 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CCD1F3BF21800A90482 /* AppConstants.swift */,
+				111A7CC91F3AF50300A90482 /* MyDictionary.swift */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
+		111A7CE41F3C50E200A90482 /* index */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CD71F3C28F400A90482 /* MyController.swift */,
+				111A7CDA1F3C31DA00A90482 /* MyTabBarController.swift */,
+				111A7CDC1F3C348F00A90482 /* OtherController.swift */,
+				111A7CDE1F3C34AC00A90482 /* IndexController.swift */,
+				111A7CE01F3C34D900A90482 /* ContactsController.swift */,
+				111A7CE21F3C4E9E00A90482 /* SettingController.swift */,
+			);
+			name = index;
+			sourceTree = "<group>";
+		};
+		111A7CE51F3C559900A90482 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				111A7CAF1F3AF46400A90482 /* LoginController.swift */,
+				111A7CCF1F3BF31400A90482 /* RegisterController.swift */,
+				111A7CD31F3C0ED400A90482 /* ForgotController.swift */,
+				111A7CD51F3C107D00A90482 /* UpdatePasswordController.swift */,
+			);
+			name = login;
+			sourceTree = "<group>";
+		};
+		46E9997F2B3095D3D53CA3D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D8865FEB7D17CE602D349C5 /* Pods_future.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9149F13B28CCD23936C8B921 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8342076166107CD9B2FD60A4 /* Pods-future.debug.xcconfig */,
+				11FFACA6D23EF07F502986C8 /* Pods-future.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +212,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 111A7CBF1F3AF46400A90482 /* Build configuration list for PBXNativeTarget "future" */;
 			buildPhases = (
+				507E5382F3F72C81EBA35C42 /* [CP] Check Pods Manifest.lock */,
 				111A7CA61F3AF46400A90482 /* Sources */,
 				111A7CA71F3AF46400A90482 /* Frameworks */,
 				111A7CA81F3AF46400A90482 /* Resources */,
+				A4118AD4544B80BDDE0358D1 /* [CP] Embed Pods Frameworks */,
+				C027DF1EE0D692C1C1C2447F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -84,7 +225,7 @@
 			);
 			name = future;
 			productName = future;
-			productReference = 111A7CAA1F3AF46400A90482 /* future.app */;
+			productReference = 111A7CAA1F3AF46400A90482 /* 未来.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -135,14 +276,84 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		507E5382F3F72C81EBA35C42 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-future-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A4118AD4544B80BDDE0358D1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-future/Pods-future-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Just/Just.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Just.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-future/Pods-future-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C027DF1EE0D692C1C1C2447F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-future/Pods-future-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		111A7CA61F3AF46400A90482 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				111A7CB01F3AF46400A90482 /* ViewController.swift in Sources */,
+				111A7CD81F3C28F400A90482 /* MyController.swift in Sources */,
+				111A7CE11F3C34D900A90482 /* ContactsController.swift in Sources */,
+				111A7CB01F3AF46400A90482 /* LoginController.swift in Sources */,
+				111A7CCE1F3BF21800A90482 /* AppConstants.swift in Sources */,
+				111A7D111F3C8B0100A90482 /* HttpUtil.swift in Sources */,
+				111A7CE31F3C4E9E00A90482 /* SettingController.swift in Sources */,
+				111A7CD21F3BF5D800A90482 /* ViewUtil.swift in Sources */,
+				111A7CCA1F3AF50300A90482 /* MyDictionary.swift in Sources */,
+				111A7CDB1F3C31DA00A90482 /* MyTabBarController.swift in Sources */,
 				111A7CB61F3AF46400A90482 /* future.xcdatamodeld in Sources */,
+				111A7CDD1F3C348F00A90482 /* OtherController.swift in Sources */,
+				111A7CD01F3BF31500A90482 /* RegisterController.swift in Sources */,
 				111A7CAE1F3AF46400A90482 /* AppDelegate.swift in Sources */,
+				111A7CDF1F3C34AC00A90482 /* IndexController.swift in Sources */,
+				111A7CD61F3C107D00A90482 /* UpdatePasswordController.swift in Sources */,
+				111A7CD41F3C0ED400A90482 /* ForgotController.swift in Sources */,
+				111A7CCC1F3AF51D00A90482 /* DictionaryDao.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,26 +474,28 @@
 		};
 		111A7CC01F3AF46400A90482 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8342076166107CD9B2FD60A4 /* Pods-future.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZAU45PX3J5;
 				INFOPLIST_FILE = future/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kangyonggan.future;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "未来";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		111A7CC11F3AF46400A90482 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11FFACA6D23EF07F502986C8 /* Pods-future.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZAU45PX3J5;
 				INFOPLIST_FILE = future/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kangyonggan.future;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "未来";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -306,6 +519,7 @@
 				111A7CC11F3AF46400A90482 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
