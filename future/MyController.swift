@@ -14,13 +14,15 @@ class MyController: UIViewController {
     
     @IBOutlet weak var topContainerView: UIView!
     
-    @IBOutlet weak var safeCenterContainerView: UIView!
+    @IBOutlet weak var safeBtn: UIButton!
     
-    @IBOutlet weak var questionContainerView: UIView!
+    @IBOutlet weak var questionBtn: UIButton!
     
-    @IBOutlet weak var onlineHelpContainerView: UIView!
+    @IBOutlet weak var surveyBtn: UIButton!
     
-    @IBOutlet weak var ideaAndAdviseContainerView: UIView!
+    @IBOutlet weak var onlineBtn: UIButton!
+    
+    @IBOutlet weak var settingBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -29,8 +31,6 @@ class MyController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        // 设置
-        parent?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "设置", style: UIBarButtonItemStyle.done, target: self, action: #selector(showSetting(_:)));
         // 导航条
         parent!.navigationItem.title = "我的";
     }
@@ -53,10 +53,13 @@ class MyController: UIViewController {
         topContainerView.layer.cornerRadius = 5;
         topContainerView.layer.masksToBounds = true;
         let color = UIColor(red: 235/255, green: 235/255, blue: 235/255, alpha: 1);
-        ViewUtil.addBorderBottom(view: safeCenterContainerView, color: color, width: 0.92);
-        ViewUtil.addBorderBottom(view: questionContainerView, color: color, width: 0.92);
-        ViewUtil.addBorderBottom(view: onlineHelpContainerView, color: color, width: 0.92);
-        ViewUtil.addBorderBottom(view: ideaAndAdviseContainerView, color: color, width: 0.92);
+        
+        // 下划线
+        ViewUtil.addBorderBottom(view: safeBtn, color: color, width: 1);
+        ViewUtil.addBorderBottom(view: questionBtn, color: color, width: 1);
+        ViewUtil.addBorderBottom(view: surveyBtn, color: color, width: 1);
+        ViewUtil.addBorderBottom(view: onlineBtn, color: color, width: 1);
+        
         
     }
     

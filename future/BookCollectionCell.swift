@@ -6,4 +6,10 @@
 //  Copyright © 2017 kangyonggan. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class BookCollectionCell: UICollectionViewCell {
+    
+    var book: Book?;
+    
+}

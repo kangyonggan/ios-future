@@ -122,7 +122,7 @@ class RegisterController: UIViewController {
     // 获取验证码
     @IBAction func getAuthCode(_ sender: Any) {
         let username =  usernameInput.text!;
-        if username.characters.count != 11 {
+        if !StringUtil.isMobile(num: username) {
             ToastUtil.show(message: "请输入正确的手机号");
             return;
         }

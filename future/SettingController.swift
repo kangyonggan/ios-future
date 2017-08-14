@@ -18,8 +18,7 @@ class SettingController: UIViewController {
     }
     
     func initView() {
-        // 导航条
-        self.parent?.navigationItem.title = "设置";
+        
     }
     
     @IBAction func logout(_ sender: Any) {
