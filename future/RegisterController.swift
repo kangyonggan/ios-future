@@ -107,7 +107,7 @@ class RegisterController: UIViewController {
             // 保存token
             let dict = MyDictionary();
             dict.key = AppConstants.KEY_TOKEN;
-            dict.value = result.2;
+            dict.value = result.2?["token"] as? String;
             dict.type = AppConstants.DICTIONERY_TYPE_COMMON;
             dictionaryDao.save(dictionary: dict);
             

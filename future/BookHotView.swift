@@ -9,9 +9,12 @@
 import UIKit
 
 class BookHotView: UITableView, UITableViewDelegate, UITableViewDataSource {
+    let bookHotUrl = "m/book/findHotBook";
     
     let CELL_ID = "hotCell";
     var bookList = [Book]();
+    
+    var p = 2;
     
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
@@ -20,33 +23,48 @@ class BookHotView: UITableView, UITableViewDelegate, UITableViewDataSource {
         self.rowHeight = 95;
         self.register(BookHotCell.self, forCellReuseIdentifier: CELL_ID);
         
-        
         // 下拉刷新
         self.refreshControl = UIRefreshControl();
         self.refreshControl?.addTarget(self, action: #selector(refreshBooks), for: .valueChanged);
-        self.refreshControl?.attributedTitle = NSAttributedString(string: "松手刷新");
+        self.refreshControl?.attributedTitle = NSAttributedString(string: "松开刷新");
     }
     
     func refreshBooks() {
-        NSLog("refresh...");
-        NSLog("refresh ok");
         self.refreshControl?.endRefreshing()
         
-        for i in 0...24 {
-            let book = Book();
-            book.picUrl = "1196s";
-            book.author = "康勇敢";
-            book.name = "阿萨德的-\(i)";
-            book.desc = "伴随着魂导科技的进步，斗罗大陆上的人类征服了海洋，又发现了两片大陆。魂兽也随着人类魂师的猎杀无度走向灭亡，沉睡无数年的魂兽之王在星斗大森林最后的净土苏醒，它要带领仅存的族人";
-            book.categories = ("xiuzhen", "修真");
-            book.isFinished = true;
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + bookHotUrl, params: ["p": String(p)]);
+        
+        if result.0 {
+            let books = result.2?["books"] as! NSArray;
             
-            bookList.insert(book, at: 0);
+            if books.count == 0 {
+                ToastUtil.show(message: "没有更多推荐小说了");
+                return;
+            }
+            
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                
+                bookList.insert(book, at: 0);
+            }
+            p += 1;
+            
+            self.reloadData();
+            
+            ToastUtil.show(message: "刷新成功");
+        } else {
+            ToastUtil.show(message: result.1);
         }
-        
-        self.reloadData();
-        
-        ToastUtil.show(message: "刷新成功");
         
     }
     
@@ -72,11 +90,11 @@ class BookHotView: UITableView, UITableViewDelegate, UITableViewDataSource {
         cell.initView(bookList: bookList, row: indexPath.row, tableView: self);
         
         return cell;
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        NSLog("selected")
+        let book = bookList[indexPath.row];
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showBook"), object: nil, userInfo: ["book": book]);
     }
     
 }

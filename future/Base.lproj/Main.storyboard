@@ -538,6 +538,35 @@
             </objects>
             <point key="canvasLocation" x="2788" y="-284.70764617691157"/>
         </scene>
+        <!--章节详情-->
+        <scene sceneID="yPa-o8-FTh">
+            <objects>
+                <viewController storyboardIdentifier="sectionController" id="1lt-yI-mBx" customClass="SectionController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ggn-Ty-OoN"/>
+                        <viewControllerLayoutGuide type="bottom" id="vSO-Ct-ui5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QMX-ZU-BIM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kfz-fq-8To">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="593"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="章节详情" id="oDR-K9-7H4"/>
+                    <connections>
+                        <outlet property="webView" destination="kfz-fq-8To" id="Esw-su-F0h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9hE-hA-0Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3847.1999999999998" y="-282.00899550224892"/>
+        </scene>
         <!--综合-->
         <scene sceneID="unG-A2-3IJ">
             <objects>

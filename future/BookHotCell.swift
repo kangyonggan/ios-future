@@ -25,7 +25,9 @@ class BookHotCell: UITableViewCell {
         
         // 左边图片
         let img = UIImageView(frame: CGRect(x: 10, y: 10, width: 60, height: 75));
-        img.image = UIImage(named: bookList[row].picUrl!);
+        let url = URL(string: AppConstants.DOMAIN + bookList[row].picUrl!);
+        let data = try! Data(contentsOf: url!);
+        img.image = UIImage(data: data);
         
         self.addSubview(img);
         
@@ -39,7 +41,7 @@ class BookHotCell: UITableViewCell {
         
         // 右中
         let descLabel = UILabel(frame: CGRect(x: 80, y: 25, width: self.frame.width - 80, height: 50));
-        descLabel.text = bookList[row].desc;
+        descLabel.text = bookList[row].descp;
         descLabel.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.8);
         descLabel.font = UIFont.systemFont(ofSize: 12);
         descLabel.numberOfLines = 2;
@@ -71,7 +73,7 @@ class BookHotCell: UITableViewCell {
         
         // 右下右左
         let categoryLabel = UILabel(frame: CGRect(x: self.frame.width - 70, y: 70, width: 30, height: 15));
-        categoryLabel.text = bookList[row].categories?.1;
+        categoryLabel.text = bookList[row].categoryName;
         categoryLabel.textColor = AppConstants.MASTER_COLOR;
         categoryLabel.font = UIFont.systemFont(ofSize: 13);
         categoryLabel.layer.borderWidth = 1

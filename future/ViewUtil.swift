@@ -37,4 +37,22 @@ class ViewUtil: NSObject {
         line.backgroundColor = color;
         view.addSubview(line);
     }
+    
+    // 获取加载中图标
+    static func loadView(frame: CGRect) -> UIView {
+        let loadMoreView = UIView(frame: frame);
+        loadMoreView.autoresizingMask = UIViewAutoresizing.flexibleWidth;
+        
+        let activityViewIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        activityViewIndicator.color = AppConstants.MASTER_COLOR
+        let indicatorX = loadMoreView.frame.size.width/2-activityViewIndicator.frame.width/2
+        let indicatorY = loadMoreView.frame.size.height/2-activityViewIndicator.frame.height/2
+        activityViewIndicator.frame = CGRect(x: indicatorX, y: indicatorY,
+                                             width: activityViewIndicator.frame.width,
+                                             height: activityViewIndicator.frame.height)
+        activityViewIndicator.startAnimating()
+        loadMoreView.addSubview(activityViewIndicator)
+        
+        return loadMoreView;
+    }
 }

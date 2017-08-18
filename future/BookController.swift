@@ -10,11 +10,16 @@ import UIKit
 
 class BookController: UIViewController {
     
+    let categoryUrl = "m/book/findAllCategory";
+    let bookHotUrl = "m/book/findHotBook";
+    
     @IBOutlet weak var topView: UIView!
     
     @IBOutlet weak var containerView: UIView!
     
     var bookList = [Book]();
+    
+    var bookHotList = [Book]();
     
     var bookCategories = [(String, String, Int)]();
     
@@ -26,6 +31,25 @@ class BookController: UIViewController {
         initView();
         
         showStore("");
+        
+        registerNotifies();
+    }
+    
+    // 跳转详情界面
+    func showSection(notification: Notification) {
+        let userInfo = notification.userInfo as! [String: AnyObject]
+        let section = userInfo["section"] as! Section
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionController") as! SectionController;
+        vc.section = section;
+        self.navigationController?.pushViewController(vc, animated: true);
+    }
+    
+    // 注册通知
+    func registerNotifies() {
+        NotificationCenter.default.addObserver(self, selector: #selector(BookController.showBook(notification:)), name: NSNotification.Name(rawValue: "showBook"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(BookController.showSection(notification:)), name: NSNotification.Name(rawValue: "showSection"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +61,22 @@ class BookController: UIViewController {
     @IBAction func showSearch(_ sender: Any) {
         clearView();
         updateBtnStatus(index: 3);
+        let view = BookSearchView(frame: frame);
+        
+        containerView.addSubview(view);
+    }
+    
+    // 小说界面
+    func showBook(notification: Notification) {
+        let userInfo = notification.userInfo as! [String: AnyObject]
+        let book = userInfo["book"] as! Book
+        
+        clearView();
+        
+        let view = BookView(frame: frame);
+        view.initView(book: book);
+
+        containerView.addSubview(view);
     }
     
     // 推荐
@@ -46,7 +86,34 @@ class BookController: UIViewController {
         
         let view = BookHotView(frame: frame);
         
-        view.initView(books: bookList);
+        
+        if bookHotList.count == 0 {
+            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + bookHotUrl, params: ["p": "1"]);
+            
+            if result.0 {
+                let books = result.2?["books"] as! NSArray;
+                for b in books {
+                    let bk = b as! NSDictionary
+                    let book = Book();
+                    book.code = bk["code"] as? Int;
+                    book.name = bk["name"] as? String;
+                    book.author = bk["author"] as? String;
+                    book.categoryCode = bk["categoryCode"] as? String;
+                    book.categoryName = bk["categoryName"] as? String;
+                    book.picUrl = bk["picUrl"] as? String;
+                    book.descp = bk["descp"] as? String;
+                    book.isFinished = bk["isFinished"] as? Bool;
+                    book.descp = bk["descp"] as? String;
+                    
+                    bookHotList.append(book);
+                }
+            } else {
+                ToastUtil.show(message: result.1);
+            }
+        }
+        
+        view.initView(books: bookHotList);
+        
         
         containerView.addSubview(view);
     }
@@ -58,18 +125,23 @@ class BookController: UIViewController {
         
         let view = BookCategoryView(frame: frame);
         
+        
         if bookCategories.count == 0 {
-            bookCategories.append(("xuanhuan", "玄幻", 28368));
-            bookCategories.append(("xiuzhen", "修真", 58621));
-            bookCategories.append(("dushi", "都市", 221154));
-            bookCategories.append(("lishi", "历史", 28368));
-            bookCategories.append(("wnagyou", "网游", 11726));
-            bookCategories.append(("kehuan", "科幻", 94626));
-            bookCategories.append(("yanqing", "言情", 3684));
-            bookCategories.append(("qita", "其他", 3938627));
+            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + categoryUrl);
+            
+            if result.0 {
+                let categories = result.2?["categories"] as! NSArray;
+                for c in categories {
+                    let category = c as! NSDictionary
+                    bookCategories.append((category["code"] as! String, category["name"] as! String, category["bookCnt"] as! Int));
+                }
+            } else {
+                ToastUtil.show(message: result.1);
+            }
         }
         
         view.initView(categories: bookCategories);
+        
         
         containerView.addSubview(view);
     }
@@ -88,8 +160,9 @@ class BookController: UIViewController {
                 book.picUrl = "1196s";
                 book.author = "康永敢";
                 book.name = "逆天邪神-\(i)";
-                book.desc = "伴随着魂导科技的进步，斗罗大陆上的人类征服了海洋，又发现了两片大陆。魂兽也随着人类魂师的猎杀无度走向灭亡，沉睡无数年的魂兽之王在星斗大森林最后的净土苏醒，它要带领仅存的族人";
-                book.categories = ("xuanhuan", "玄幻");
+                book.descp = "伴随着魂导科技的进步，斗罗大陆上的人类征服了海洋，又发现了两片大陆。魂兽也随着人类魂师的猎杀无度走向灭亡，沉睡无数年的魂兽之王在星斗大森林最后的净土苏醒，它要带领仅存的族人";
+                book.categoryCode = "xuanhuan";
+                book.categoryName = "玄幻";
                 book.isFinished = false;
                 
                 bookList.append(book);
