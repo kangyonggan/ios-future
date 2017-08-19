@@ -11,14 +11,18 @@ import UIKit
 class AppConstants: NSObject {
     
     // 基地址
-    static let DOMAIN = "https://kangyonggan.com/";
+        static let DOMAIN = "https://kangyonggan.com/";
+//    static let DOMAIN = "http://10.10.10.100:8080/";
 //    static let DOMAIN = "http://127.0.0.1:8080/";
     
-    // 字典通用类型
-    static let DICTIONERY_TYPE_COMMON = "common";
+    // 字典默认类型
+    static let DICTIONERY_TYPE_DEFAULT = "default";
     
     // 登录token存放在库中的key
     static let KEY_TOKEN = "KEY_TOKEN";
+    
+    // 用户名存放在库中的key
+    static let KEY_USERNAME = "KEY_USERNAME";
     
     // 主色
     static let MASTER_COLOR = UIColor(red: 255/255, green: 85/255, blue: 55/255, alpha: 1);

@@ -102,13 +102,13 @@ class RegisterController: UIViewController {
         
         if result.0 {
             // 删除老的token
-            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);
+            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: AppConstants.KEY_TOKEN);
             
             // 保存token
             let dict = MyDictionary();
             dict.key = AppConstants.KEY_TOKEN;
             dict.value = result.2?["token"] as? String;
-            dict.type = AppConstants.DICTIONERY_TYPE_COMMON;
+            dict.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
             dictionaryDao.save(dictionary: dict);
             
             // 跳转到注册成功界面

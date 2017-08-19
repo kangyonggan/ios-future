@@ -40,7 +40,7 @@ class LoginController: UIViewController {
     func tryLogin() {
         if !isLogout {
             // 取出本地token，尝试直接登录
-            let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);
+            let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: AppConstants.KEY_TOKEN);
             
             if dict == nil {
                 // 本地token不存在
@@ -54,7 +54,7 @@ class LoginController: UIViewController {
             }
         } else {
             // 删除老的token
-            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);
+            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: AppConstants.KEY_TOKEN);
         }
     }
     
@@ -112,14 +112,21 @@ class LoginController: UIViewController {
         
         if result.0 {
             // 删除老的token
-            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_COMMON, key: AppConstants.KEY_TOKEN);
+            dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: AppConstants.KEY_TOKEN);
             
             // 保存token
             let dict = MyDictionary();
             dict.key = AppConstants.KEY_TOKEN;
             dict.value = result.2?["token"] as? String;
-            dict.type = AppConstants.DICTIONERY_TYPE_COMMON;
+            dict.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
             dictionaryDao.save(dictionary: dict);
+            
+            // 保存手机号
+            let mobile = MyDictionary();
+            mobile.key = AppConstants.KEY_USERNAME;
+            mobile.value = username;
+            mobile.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
+            dictionaryDao.save(dictionary: mobile);
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
             self.navigationController?.pushViewController(vc!, animated: true);

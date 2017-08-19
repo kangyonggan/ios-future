@@ -9,86 +9,77 @@
 import UIKit
 
 class BookController: UIViewController {
-    
+    // 查询所有分类的url
     let categoryUrl = "m/book/findAllCategory";
-    let bookHotUrl = "m/book/findHotBook";
     
-    @IBOutlet weak var topView: UIView!
+    // 查询站长推荐的url
+    let hotUrl = "m/book/findHotBook";
     
-    @IBOutlet weak var containerView: UIView!
+    // 查询我的收藏的url
+    let favUrl = "m/book/findFavorites";
     
-    var bookList = [Book]();
+    // 搜索小说的url
+    let searchUrl = "m/book/searchBooks";
     
-    var bookHotList = [Book]();
+    @IBOutlet weak var searchInput: UITextField!
     
-    var bookCategories = [(String, String, Int)]();
+    @IBOutlet weak var searchBtn: UIButton!
     
-    var frame: CGRect!;
+    @IBOutlet weak var categoryCollectionView: CategoryCollectionView!
+    
+    @IBOutlet weak var hotCollectionView: HotCollectionView!
+    
+    @IBOutlet weak var favCollectionView: FavCollectionView!
+    
+    @IBOutlet weak var moreHotBtn: UIButton!
+    
+    @IBOutlet weak var moreFavBtn: UIButton!
+    
+    // 九大分类数据
+    var categoryList = [(String, String, Int)]();
+    
+    // 站长推荐
+    var hotList = [Book]();
+    
+    // 我的收藏
+    var favList = [Favorite]();
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
+        initData();
+        
         initView();
         
-        showStore("");
-        
-        registerNotifies();
-    }
-    
-    // 跳转详情界面
-    func showSection(notification: Notification) {
-        let userInfo = notification.userInfo as! [String: AnyObject]
-        let section = userInfo["section"] as! Section
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionController") as! SectionController;
-        vc.section = section;
-        self.navigationController?.pushViewController(vc, animated: true);
-    }
-    
-    // 注册通知
-    func registerNotifies() {
-        NotificationCenter.default.addObserver(self, selector: #selector(BookController.showBook(notification:)), name: NSNotification.Name(rawValue: "showBook"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(BookController.showSection(notification:)), name: NSNotification.Name(rawValue: "showSection"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         // 导航条
-        parent?.navigationItem.title = "图书馆";
+        parent?.navigationItem.title = "小说城";
+        
+        reloadFavorite();
     }
     
-    // 搜索
-    @IBAction func showSearch(_ sender: Any) {
-        clearView();
-        updateBtnStatus(index: 3);
-        let view = BookSearchView(frame: frame);
+    // 初始化数据
+    func initData() {
+        // 加载九大分类
+        if categoryList.isEmpty {
+            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + categoryUrl);
+            
+            if result.0 {
+                let categories = result.2?["categories"] as! NSArray;
+                for c in categories {
+                    let category = c as! NSDictionary
+                    categoryList.append((category["code"] as! String, category["name"] as! String, category["bookCnt"] as! Int));
+                }
+            } else {
+                ToastUtil.show(message: result.1);
+            }
+        }
         
-        containerView.addSubview(view);
-    }
-    
-    // 小说界面
-    func showBook(notification: Notification) {
-        let userInfo = notification.userInfo as! [String: AnyObject]
-        let book = userInfo["book"] as! Book
-        
-        clearView();
-        
-        let view = BookView(frame: frame);
-        view.initView(book: book);
-
-        containerView.addSubview(view);
-    }
-    
-    // 推荐
-    @IBAction func showHot(_ sender: Any) {
-        clearView();
-        updateBtnStatus(index: 2);
-        
-        let view = BookHotView(frame: frame);
-        
-        
-        if bookHotList.count == 0 {
-            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + bookHotUrl, params: ["p": "1"]);
+        // 加载站长推荐
+        if hotList.isEmpty {
+            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + hotUrl, params: ["p": "1", "pageSize": "4"]);
             
             if result.0 {
                 let books = result.2?["books"] as! NSArray;
@@ -105,107 +96,150 @@ class BookController: UIViewController {
                     book.isFinished = bk["isFinished"] as? Bool;
                     book.descp = bk["descp"] as? String;
                     
-                    bookHotList.append(book);
+                    hotList.append(book);
                 }
             } else {
                 ToastUtil.show(message: result.1);
             }
         }
         
-        view.initView(books: bookHotList);
-        
-        
-        containerView.addSubview(view);
-    }
-    
-    // 分类
-    @IBAction func showCategory(_ sender: Any) {
-        clearView();
-        updateBtnStatus(index: 1);
-        
-        let view = BookCategoryView(frame: frame);
-        
-        
-        if bookCategories.count == 0 {
-            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + categoryUrl);
-            
-            if result.0 {
-                let categories = result.2?["categories"] as! NSArray;
-                for c in categories {
-                    let category = c as! NSDictionary
-                    bookCategories.append((category["code"] as! String, category["name"] as! String, category["bookCnt"] as! Int));
-                }
-            } else {
-                ToastUtil.show(message: result.1);
-            }
-        }
-        
-        view.initView(categories: bookCategories);
-        
-        
-        containerView.addSubview(view);
-    }
-    
-    // 收藏
-    @IBAction func showStore(_ sender: Any) {
-        clearView();
-        updateBtnStatus(index: 0);
-        
-        let collectionView = BookCollectionView(frame: frame);
-        
-        // 防止每次都去请求接口
-        if bookList.count == 0 {
-            for i in 0...24 {
-                let book = Book();
-                book.picUrl = "1196s";
-                book.author = "康永敢";
-                book.name = "逆天邪神-\(i)";
-                book.descp = "伴随着魂导科技的进步，斗罗大陆上的人类征服了海洋，又发现了两片大陆。魂兽也随着人类魂师的猎杀无度走向灭亡，沉睡无数年的魂兽之王在星斗大森林最后的净土苏醒，它要带领仅存的族人";
-                book.categoryCode = "xuanhuan";
-                book.categoryName = "玄幻";
-                book.isFinished = false;
-                
-                bookList.append(book);
-            }
-        }
-        
-        collectionView.load(books: bookList);
-        containerView.addSubview(collectionView);
-    }
-    
-    // 清空容器所有内容
-    func clearView() {
-        let views = containerView.subviews;
-        for view in views {
-            view.removeFromSuperview();
-        }
-        
-    }
-    
-    // 更新顶部按钮状态
-    func updateBtnStatus(index: Int) {
-        let views = topView.subviews;
-        for i in 0..<views.count {
-            let btn = views[i] as? UIButton;
-            if index == i {
-                btn?.setTitleColor(AppConstants.MASTER_COLOR, for: .normal);
-                btn?.isEnabled = false;
-            } else {
-                btn?.setTitleColor(UIColor.darkText, for: .normal);
-                btn?.isEnabled = true;
-            }
-        }
     }
     
     func initView() {
-        frame = CGRect(x: 0, y: 0, width: containerView.frame.width, height: containerView.frame.height - 60);
+        // 搜索框
+        searchInput.layer.borderWidth = 1;
+        searchInput.layer.cornerRadius = 3;
+        searchInput.layer.borderColor = UIColor(red: 191/255, green: 191/255, blue: 191/255, alpha: 1).cgColor;
+        ViewUtil.addLeftIcon(textField: searchInput, icon: "search", withSize: 25);
         
-        // 顶部按钮分割线
-        for i in 1...3 {
-            let line = UIView(frame: CGRect(x: topView.frame.width / 4 * CGFloat(i), y: topView.frame.height * 0.3, width: 1, height: topView.frame.height * 0.4));
-            line.backgroundColor = UIColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 0.9);
-            topView.addSubview(line);
+        // 搜索按钮
+        searchBtn.layer.cornerRadius = 5;
+        
+        // 九大分类
+        categoryCollectionView.loadData(categories: categoryList);
+        categoryCollectionView.viewController = self;
+        
+        // 站长推荐
+        hotCollectionView.loadData(books: hotList);
+        hotCollectionView.viewController = self;
+        
+        // 我的收藏
+        favCollectionView.loadData(favorites: favList);
+        favCollectionView.viewController = self;
+//        NotificationCenter.default.addObserver(self, selector: #selector(reloadFavorite(notification:)), name: NSNotification.Name(rawValue: "changeFavorite"), object: nil);
+    }
+    
+    // 重新加载我的收藏
+    func reloadFavorite() {
+        loadFavorite();
+        favCollectionView.loadData(favorites: favList);
+    }
+    
+    // 加载我的收藏
+    func loadFavorite() {
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + favUrl, params: ["p": "1", "pageSize": "4", "username": UserUtil.getUsername()]);
+        if result.0 {
+            
+            favList = [];
+            
+            let favorites = result.2?["favorites"] as! NSArray;
+            for f in favorites {
+                let fav = f as! NSDictionary
+                let favorite = Favorite();
+                favorite.username = fav["username"] as? String;
+                favorite.bookCode = fav["bookCode"] as? Int;
+                favorite.bookName = fav["bookName"] as? String;
+                favorite.picUrl = fav["picUrl"] as? String;
+                favorite.lastSectionCode = fav["lastSectionCode"] as? Int;
+                favorite.lastSectionTitle = fav["lastSectionTitle"] as? String;
+                
+                favList.append(favorite);
+            }
+            
+            if favList.count < 4 && moreFavBtn != nil {
+                moreFavBtn.removeFromSuperview();
+                moreFavBtn = nil;
+            }
+            
+        } else {
+            ToastUtil.show(message: result.1);
         }
     }
     
+     // 搜索
+    @IBAction func search(_ sender: Any) {
+        let key = searchInput.text!;
+
+        if key.isEmpty {
+            ToastUtil.show(message: "请输入搜索内容！");
+            return;
+        }
+        
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + searchUrl, params: ["key": key]);
+        
+        var resBooks = [Book]();
+        if result.0 {
+            let books = result.2?["books"] as! NSArray;
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                
+                resBooks.append(book);
+            }
+        } else {
+            ToastUtil.show(message: result.1);
+            return;
+        }
+        
+        if resBooks.isEmpty {
+            ToastUtil.show(message: "没有符合条件的小说");
+            return;
+        }
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
+        vc.bookList = resBooks;
+        vc.refreshNav(title: "搜索结果");
+        parent?.navigationController?.pushViewController(vc, animated: false);
+    }
+    
+    // 更多推荐
+    @IBAction func moreHot(_ sender: Any) {
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + hotUrl, params: ["p": "1", "pageSize": "50"]);
+        
+        var resBooks = [Book]();
+        if result.0 {
+            let books = result.2?["books"] as! NSArray;
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                
+                resBooks.append(book);
+            }
+        } else {
+            ToastUtil.show(message: result.1);
+        }
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
+        vc.bookList = resBooks;
+        vc.refreshNav(title: "站长推荐");
+        parent?.navigationController?.pushViewController(vc, animated: false);
+    }
 }

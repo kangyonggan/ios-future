@@ -18,6 +18,14 @@ class ViewUtil: NSObject {
         textField.leftViewMode = UITextFieldViewMode.always;
     }
     
+    // 给输入框左侧添加图标
+    static func addLeftIcon(textField: UITextField, icon: String, withSize: Int) {
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: withSize, height: withSize));
+        imageView.image = UIImage(named: icon);
+        textField.leftView = imageView;
+        textField.leftViewMode = UITextFieldViewMode.always;
+    }
+    
     // 给控件加下边框，默认gray颜色
     static func addBorderBottom(view: UIView) {
         ViewUtil.addBorderBottom(view: view, color: UIColor.gray);
@@ -39,20 +47,32 @@ class ViewUtil: NSObject {
     }
     
     // 获取加载中图标
-    static func loadView(frame: CGRect) -> UIView {
-        let loadMoreView = UIView(frame: frame);
-        loadMoreView.autoresizingMask = UIViewAutoresizing.flexibleWidth;
+    static func loadingView(center: CGPoint) -> UIActivityIndicatorView {
+        let loadingView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        loadingView.color = AppConstants.MASTER_COLOR
+        loadingView.center = center;
         
-        let activityViewIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        activityViewIndicator.color = AppConstants.MASTER_COLOR
-        let indicatorX = loadMoreView.frame.size.width/2-activityViewIndicator.frame.width/2
-        let indicatorY = loadMoreView.frame.size.height/2-activityViewIndicator.frame.height/2
-        activityViewIndicator.frame = CGRect(x: indicatorX, y: indicatorY,
-                                             width: activityViewIndicator.frame.width,
-                                             height: activityViewIndicator.frame.height)
-        activityViewIndicator.startAnimating()
-        loadMoreView.addSubview(activityViewIndicator)
+        return loadingView;
+    }
+    
+    // 异步加载图片
+    static func loadImage(string: String, imageView: UIImageView) {
+        let url = URL(string: string)!;
+        let request = URLRequest(url: url);
         
-        return loadMoreView;
+        let session = URLSession.shared;
+        let dataTask = session.dataTask(with: request, completionHandler: {
+            (data, response, error) -> Void in
+            if error != nil{
+                let img = UIImage(named: "defaultCover");
+                imageView.image = img;
+            }else{
+                let img = UIImage(data:data!)
+                imageView.image = img;
+            }
+        }) as URLSessionTask
+        
+        //使用resume方法启动任务
+        dataTask.resume()
     }
 }
