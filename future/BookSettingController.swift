@@ -11,10 +11,15 @@ import UIKit
 class BookSettingController: UIViewController {
     
     let fontSizeKey = "fontSize";
+    let themeKey = "theme";
     
     @IBOutlet weak var slider: UISlider!
     
+    @IBOutlet weak var themeLabel: UILabel!
+    
     let dictionaryDao = DictionaryDao();
+    
+    var themes = [(String, String)]();
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -23,6 +28,8 @@ class BookSettingController: UIViewController {
     }
     
     func initView() {
+        themes = AppConstants.themes();
+        
         let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: fontSizeKey);
         
         if dict == nil {
@@ -31,6 +38,25 @@ class BookSettingController: UIViewController {
             slider.setValue(Float((dict?.value)!)!, animated: false);
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        
+        updateThemeLabel();
+    }
+    
+    func updateThemeLabel() {
+        let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: themeKey);
+        
+        if dict != nil {
+            for theme in themes {
+                if theme.1 == dict?.value {
+                    themeLabel.text = theme.0;
+                    break;
+                }
+            }
+        }
     }
     
     // 改变字体大小

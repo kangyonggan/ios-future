@@ -1,5 +1,5 @@
 //
-//  SectionCell.swift
+//  BookThemeCell.swift
 //  future
 //
 //  Created by kangyonggan on 8/20/17.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class SectionCell: UITableViewCell {
+class BookThemeCell: UITableViewCell {
     
     @IBOutlet weak var leftImage: UIImageView!
     
-    @IBOutlet weak var sectionNameLabel: UILabel!
+    @IBOutlet weak var themeName: UILabel!
     
     func initView(name: String, isSelected: Bool) {
-        sectionNameLabel.text = name;
+        themeName.text = name;
         
         if !isSelected {
             leftImage.isHidden = true;

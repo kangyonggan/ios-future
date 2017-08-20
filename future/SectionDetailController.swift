@@ -11,13 +11,18 @@ import UIKit
 class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     let fontSizeKey = "fontSize";
+    let themeKey = "theme";
     
     let sectionUrl = "m/book/section";
     let addFavoriteUrl = "m/book/addFavorite";
     let removeFavoriteUrl = "m/book/removeFavorite";
+    let sectionsUrl = "m/book/sections";
     
     var section: Section!;
     var isFavorite: Bool!;
+    
+    var sections = [Section]();
+    var bookName: String!;
     
     @IBOutlet weak var webView: UIWebView!
     
@@ -29,6 +34,17 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         super.viewDidLoad();
         
         webView.delegate = self;
+        updateContent();
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSectionDetail(notification:)), name: NSNotification.Name(rawValue: "updateSectionDetail"), object: nil)
+    }
+    
+    // 更新章节内容, 用于接收章节列表的通知
+    func updateSectionDetail(notification: Notification) {
+        let userInfo = notification.userInfo as! [String: AnyObject]
+        self.section = userInfo["section"] as! Section;
+        self.isFavorite = userInfo["isFavorite"] as! Bool;
+        
         updateContent();
     }
     
@@ -49,6 +65,17 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         }
         
         webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.fontSize='\(size)px'");
+        
+        
+        let themeDict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: themeKey);
+        
+        var theme = "#FFFFFF";
+        if themeDict != nil {
+            theme = (themeDict?.value)!;
+        }
+        
+        webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.background='\(theme)'");
+    
     }
     
     // 下一章
@@ -107,8 +134,8 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        updateSizeAndTheme();
         webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.webkitTextFillColor='#555555'");
-        webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.background='#FFFFFF'");
     }
     
     // 收藏/取消收藏
@@ -145,5 +172,37 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         }
     }
     
+    // 章节列表
+    @IBAction func sectionList(_ sender: Any) {
+        if sections.isEmpty {
+            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionsUrl, params: ["bookCode": String(section.bookCode!)]);
+            
+            if result.0 {
+                bookName = result.2?["bookName"] as! String;
+                let resSections = result.2?["sections"] as! NSArray;
+                for s in resSections {
+                    let ss = s as! NSDictionary
+                    let section = Section();
+                    section.bookCode = ss["bookCode"] as? Int;
+                    section.code = ss["code"] as? Int
+                    section.content = ss["content"] as? String;
+                    section.title = ss["title"] as? String
+                    section.prevSectionCode = ss["prevSectionCode"] as? Int
+                    section.nextSectionCode = ss["nextSectionCode"] as? Int
+                    
+                    sections.append(section);
+                }
+            } else {
+                ToastUtil.show(message: result.1, target: view);
+                return;
+            }
+        }
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
+        vc.sectionList = sections;
+        vc.currentSectionCode = section.code;
+        vc.refreshNav(title: bookName);
+        self.navigationController?.pushViewController(vc, animated: false);
+    }
     
 }
