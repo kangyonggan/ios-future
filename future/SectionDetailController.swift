@@ -10,6 +10,8 @@ import UIKit
 
 class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
+    let fontSizeKey = "fontSize";
+    
     let sectionUrl = "m/book/section";
     let addFavoriteUrl = "m/book/addFavorite";
     let removeFavoriteUrl = "m/book/removeFavorite";
@@ -21,29 +23,36 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     @IBOutlet weak var favoriteBtn: UIBarButtonItem!
     
+    let dictionaryDao = DictionaryDao();
+    
     override func viewDidLoad() {
         super.viewDidLoad();
         
         webView.delegate = self;
-        initView()
-    }
-    
-    func initView() {
         updateContent();
-        
-        // 左滑手势， 下一章
-        let swipeNext = UISwipeGestureRecognizer(target: self, action: #selector(swipeNext(_:)));
-        swipeNext.direction = .left;
-        self.view.addGestureRecognizer(swipeNext);
-        
-        // 右滑手势， 上一章
-        let swipePrev = UISwipeGestureRecognizer(target: self, action: #selector(swipePrev(_:)));
-        swipePrev.direction = .right;
-        self.view.addGestureRecognizer(swipePrev);
     }
     
-    // 左滑，下一章
-    func swipeNext(_ recognizer:UISwipeGestureRecognizer) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+        
+        updateSizeAndTheme();
+    }
+    
+    // 修改主题和字体
+    func updateSizeAndTheme() {
+        let sizeDict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: fontSizeKey);
+        
+        var size = 22;
+        if sizeDict != nil {
+            let fSize = Float((sizeDict?.value)!);
+            size = Int(fSize!);
+        }
+        
+        webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.fontSize='\(size)px'");
+    }
+    
+    // 下一章
+    @IBAction func nextSextion(_ sender: Any) {
         if (section.nextSectionCode == 0) {
             ToastUtil.show(message: "已经是最后一章了", target: view);
             return;
@@ -52,8 +61,8 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         loadSection(code: section.nextSectionCode!)
     }
     
-    // 右滑，上一章
-    func swipePrev(_ recognizer:UISwipeGestureRecognizer) {
+    // 上一章
+    @IBAction func prevSection(_ sender: Any) {
         if (section.prevSectionCode == 0) {
             ToastUtil.show(message: "已经是第一章了", target: view);
             return;
@@ -87,7 +96,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     func updateContent() {
         self.navigationItem.title = section.title;
-        webView.loadHTMLString("<div id='content'>\(section.content!)</div>", baseURL: nil);
+        webView.loadHTMLString(section.content!, baseURL: nil);
         
         // 设置是否是收藏的图标
         if isFavorite {
@@ -98,8 +107,8 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        webView.stringByEvaluatingJavaScript(from: "document.getElementById('content').style.fontSize='36px'");
-        webView.stringByEvaluatingJavaScript(from: "document.getElementById('content').style.webkitTextSizeAdjust='200%'");
+        webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.webkitTextFillColor='#555555'");
+        webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.background='#FFFFFF'");
     }
     
     // 收藏/取消收藏
@@ -123,7 +132,6 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + url, params: params);
         
         if result.0 {
-//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeFavorite"), object: nil, userInfo: nil);
             if isFavorite {
                 favoriteBtn.image = UIImage(named: "disFavorite");
             } else {

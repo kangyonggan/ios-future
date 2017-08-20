@@ -15,14 +15,14 @@ class FavCollectionView: UICollectionView, UICollectionViewDelegate, UICollectio
     var viewController: UIViewController!;
     
     let CELL_ID = "favCell";
-    var favorites: [Favorite]!;
+    var books: [Book]!;
     var label: UILabel?;
     
-    func loadData(favorites: [Favorite]) {
+    func loadData(books: [Book]) {
         self.delegate = self;
         self.dataSource = self;
-        self.favorites = favorites;
-        if favorites.isEmpty {
+        self.books = books;
+        if books.isEmpty {
             label = UILabel(frame: CGRect(x: frame.width / 2 - 80, y: frame.height / 2 - 10, width: 160, height: 40));
             label?.text = "没有收藏的小说";
             label?.textAlignment = .center;
@@ -46,21 +46,21 @@ class FavCollectionView: UICollectionView, UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favorites.count;
+        return books.count;
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CELL_ID, for: indexPath) as! FavCollectionCell;
         
-        cell.initView(favorite: favorites[indexPath.row]);
+        cell.initView(book: books[indexPath.row]);
         
         return cell;
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let favorite = favorites[indexPath.row];
+        let book = books[indexPath.row];
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionUrl, params: ["sectionCode": String(favorite.lastSectionCode!), "username": UserUtil.getUsername()]);
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionUrl, params: ["sectionCode": String(book.lastSectionCode!), "username": UserUtil.getUsername()]);
         
         if result.0 {
             let sec = result.2!["section"] as! NSDictionary;

@@ -41,6 +41,6 @@ class Book: NSObject {
     // 最新章节
     var newSection:(Int, String)?;
     
-    // 正在阅读的章节
-    var nowSection:(Int, String)?;
+    // 最后阅读的章节代码
+    var lastSectionCode:Int?;
 }

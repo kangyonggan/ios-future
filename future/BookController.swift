@@ -42,7 +42,7 @@ class BookController: UIViewController {
     var hotList = [Book]();
     
     // 我的收藏
-    var favList = [Favorite]();
+    var favList = [Book]();
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -58,6 +58,8 @@ class BookController: UIViewController {
         parent?.navigationItem.title = "小说城";
         
         reloadFavorite();
+        
+        reloadHot();
     }
     
     // 初始化数据
@@ -76,33 +78,6 @@ class BookController: UIViewController {
                 ToastUtil.show(message: result.1, target: view);
             }
         }
-        
-        // 加载站长推荐
-        if hotList.isEmpty {
-            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + hotUrl, params: ["p": "1", "pageSize": "4"]);
-            
-            if result.0 {
-                let books = result.2?["books"] as! NSArray;
-                for b in books {
-                    let bk = b as! NSDictionary
-                    let book = Book();
-                    book.code = bk["code"] as? Int;
-                    book.name = bk["name"] as? String;
-                    book.author = bk["author"] as? String;
-                    book.categoryCode = bk["categoryCode"] as? String;
-                    book.categoryName = bk["categoryName"] as? String;
-                    book.picUrl = bk["picUrl"] as? String;
-                    book.descp = bk["descp"] as? String;
-                    book.isFinished = bk["isFinished"] as? Bool;
-                    book.descp = bk["descp"] as? String;
-                    
-                    hotList.append(book);
-                }
-            } else {
-                ToastUtil.show(message: result.1, target: view);
-            }
-        }
-        
     }
     
     func initView() {
@@ -124,15 +99,55 @@ class BookController: UIViewController {
         hotCollectionView.viewController = self;
         
         // 我的收藏
-        favCollectionView.loadData(favorites: favList);
+        favCollectionView.loadData(books: favList);
         favCollectionView.viewController = self;
-//        NotificationCenter.default.addObserver(self, selector: #selector(reloadFavorite(notification:)), name: NSNotification.Name(rawValue: "changeFavorite"), object: nil);
     }
     
     // 重新加载我的收藏
     func reloadFavorite() {
         loadFavorite();
-        favCollectionView.loadData(favorites: favList);
+        favCollectionView.loadData(books: favList);
+    }
+    
+    // 重新加载站长推荐
+    func reloadHot() {
+        loadHot();
+        hotCollectionView.loadData(books: hotList);
+    }
+    
+    // 加载站长推荐
+    func loadHot() {
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + hotUrl, params: ["p": "1", "pageSize": "4"]);
+        
+        if result.0 {
+            
+            hotList = [];
+            
+            let books = result.2?["books"] as! NSArray;
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                
+                hotList.append(book);
+            }
+            
+            if hotList.count < 4 {
+                moreHotBtn.isEnabled = false;
+            } else {
+                moreHotBtn.isEnabled = true;
+            }
+        } else {
+            ToastUtil.show(message: result.1, target: view);
+        }
     }
     
     // 加载我的收藏
@@ -142,23 +157,28 @@ class BookController: UIViewController {
             
             favList = [];
             
-            let favorites = result.2?["favorites"] as! NSArray;
-            for f in favorites {
-                let fav = f as! NSDictionary
-                let favorite = Favorite();
-                favorite.username = fav["username"] as? String;
-                favorite.bookCode = fav["bookCode"] as? Int;
-                favorite.bookName = fav["bookName"] as? String;
-                favorite.picUrl = fav["picUrl"] as? String;
-                favorite.lastSectionCode = fav["lastSectionCode"] as? Int;
-                favorite.lastSectionTitle = fav["lastSectionTitle"] as? String;
+            let books = result.2?["books"] as! NSArray;
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                book.lastSectionCode = bk["lastSectionCode"] as? Int;
                 
-                favList.append(favorite);
+                favList.append(book);
             }
             
-            if favList.count < 4 && moreFavBtn != nil {
-                moreFavBtn.removeFromSuperview();
-                moreFavBtn = nil;
+            if favList.count < 4 {
+                moreFavBtn.isEnabled = false;
+            } else {
+                moreFavBtn.isEnabled = true;
             }
             
         } else {
@@ -244,4 +264,40 @@ class BookController: UIViewController {
         vc.refreshNav(title: "站长推荐");
         parent?.navigationController?.pushViewController(vc, animated: false);
     }
+    
+    // 更多收藏
+    @IBAction func moreFavorite(_ sender: Any) {
+        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + favUrl, params: ["p": "1", "pageSize": "50", "username": UserUtil.getUsername()]);
+        
+        var resBooks = [Book]();
+        if result.0 {
+            let books = result.2?["books"] as! NSArray;
+            for b in books {
+                let bk = b as! NSDictionary
+                let book = Book();
+                book.code = bk["code"] as? Int;
+                book.name = bk["name"] as? String;
+                book.author = bk["author"] as? String;
+                book.categoryCode = bk["categoryCode"] as? String;
+                book.categoryName = bk["categoryName"] as? String;
+                book.picUrl = bk["picUrl"] as? String;
+                book.descp = bk["descp"] as? String;
+                book.isFinished = bk["isFinished"] as? Bool;
+                book.descp = bk["descp"] as? String;
+                book.lastSectionCode = bk["lastSectionCode"] as? Int;
+                
+                resBooks.append(book);
+            }
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
+            vc.bookList = resBooks;
+            vc.refreshNav(title: "我的收藏");
+            parent?.navigationController?.pushViewController(vc, animated: false);
+            
+        } else {
+            ToastUtil.show(message: result.1, target: view);
+        }
+    }
+    
+    
 }

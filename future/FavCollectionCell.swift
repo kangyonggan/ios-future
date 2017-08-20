@@ -14,12 +14,11 @@ class FavCollectionCell: UICollectionViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     
-    func initView(favorite: Favorite) {
-        // 封面 异步加载
-        ViewUtil.loadImage(string: AppConstants.DOMAIN + favorite.picUrl!, imageView: imageView);
+    func initView(book: Book) {
+        ViewUtil.loadImage(string: AppConstants.DOMAIN + book.picUrl!, imageView: imageView);
         
         // 书名
-        nameLabel.text = favorite.bookName;
+        nameLabel.text = book.name;
     }
 }
 
