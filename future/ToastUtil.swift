@@ -7,13 +7,15 @@
 //
 
 import Foundation
-import Toaster;
+//import Toaster;
+import Toast_Swift;
 
 class ToastUtil: NSObject {
     
     // 提示信息
-    static func show(message: String) {
-        Toast(text: message).show();
+    static func show(message: String, target: UIView) {
+//        Toast(text: message).show();
+        target.makeToast(message, duration: 2, position: CGPoint(x: target.center.x, y: target.center.y + 200))
     }
     
 }

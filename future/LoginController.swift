@@ -99,12 +99,12 @@ class LoginController: UIViewController {
         let password = passwordInput.text!;
         
         if !StringUtil.isMobile(num: username) {
-            ToastUtil.show(message: "请输入正确的手机号");
+            ToastUtil.show(message: "请输入正确的手机号", target: view);
             return;
         }
         
         if password.characters.count < 8 || password.characters.count > 20 {
-            ToastUtil.show(message: "密码长度为8-20位");
+            ToastUtil.show(message: "密码长度为8-20位", target: view);
             return;
         }
         
@@ -131,7 +131,7 @@ class LoginController: UIViewController {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
             self.navigationController?.pushViewController(vc!, animated: true);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
         
     }

@@ -65,7 +65,7 @@ class BookListController: UITableViewController {
             vc.isFavorite = result.2!["favorite"] as! Bool;
             self.navigationController?.pushViewController(vc, animated: false);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     

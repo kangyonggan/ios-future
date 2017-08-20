@@ -80,7 +80,7 @@ class FavCollectionView: UICollectionView, UICollectionViewDelegate, UICollectio
             
             viewController.navigationController?.pushViewController(vc, animated: false);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: self);
         }
     }
 }

@@ -60,7 +60,7 @@ class HotCollectionView: UICollectionView, UICollectionViewDelegate, UICollectio
             vc.isFavorite = result.2!["favorite"] as! Bool;
             viewController.navigationController?.pushViewController(vc, animated: false);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: self);
         }
     }
 }

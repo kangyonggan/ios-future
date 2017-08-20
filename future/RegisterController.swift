@@ -84,17 +84,17 @@ class RegisterController: UIViewController {
         let authCode = authCodeInput.text!;
         
         if username.characters.count != 11 {
-            ToastUtil.show(message: "请输入正确的手机号");
+            ToastUtil.show(message: "请输入正确的手机号", target: view);
             return;
         }
         
         if authCode.characters.count != 4 {
-            ToastUtil.show(message: "验证码的长度必须是4位");
+            ToastUtil.show(message: "验证码的长度必须是4位", target: view);
             return;
         }
         
         if password.characters.count < 8 || password.characters.count > 20 {
-            ToastUtil.show(message: "密码长度为8-20位");
+            ToastUtil.show(message: "密码长度为8-20位", target: view);
             return;
         }
         
@@ -115,7 +115,7 @@ class RegisterController: UIViewController {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "registerSuccessController");
             self.navigationController?.pushViewController(vc!, animated: true);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     
@@ -123,21 +123,21 @@ class RegisterController: UIViewController {
     @IBAction func getAuthCode(_ sender: Any) {
         let username =  usernameInput.text!;
         if !StringUtil.isMobile(num: username) {
-            ToastUtil.show(message: "请输入正确的手机号");
+            ToastUtil.show(message: "请输入正确的手机号", target: view);
             return;
         }
         
         let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "REGISTER"]);
         
         if result.0 {
-            ToastUtil.show(message: "获取验证码成功");
+            ToastUtil.show(message: "获取验证码成功", target: view);
             
             time = 0;
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateAuthCodeBtn), userInfo: nil, repeats: true);
             authCodeBtn.isEnabled = false;
             authCodeBtn.backgroundColor = UIColor.lightGray;
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     

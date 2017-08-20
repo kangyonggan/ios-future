@@ -65,12 +65,12 @@ class CategoryCollectionView: UICollectionView, UICollectionViewDelegate, UIColl
                 resBooks.append(book);
             }
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: self);
             return;
         }
         
         if resBooks.isEmpty {
-            ToastUtil.show(message: "没有此分类的小说");
+            ToastUtil.show(message: "没有此分类的小说", target: self);
             return;
         }
         

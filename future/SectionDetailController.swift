@@ -45,7 +45,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     // 左滑，下一章
     func swipeNext(_ recognizer:UISwipeGestureRecognizer) {
         if (section.nextSectionCode == 0) {
-            ToastUtil.show(message: "已经是最后一章了");
+            ToastUtil.show(message: "已经是最后一章了", target: view);
             return;
         }
         
@@ -55,7 +55,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     // 右滑，上一章
     func swipePrev(_ recognizer:UISwipeGestureRecognizer) {
         if (section.prevSectionCode == 0) {
-            ToastUtil.show(message: "已经是第一章了");
+            ToastUtil.show(message: "已经是第一章了", target: view);
             return;
         }
         
@@ -81,7 +81,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
             self.section = section;
             updateContent();
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     
@@ -131,9 +131,9 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
             }
             
             isFavorite = !isFavorite;
-            ToastUtil.show(message: msg);
+            ToastUtil.show(message: msg, target: view);
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     

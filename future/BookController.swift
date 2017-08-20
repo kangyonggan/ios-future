@@ -73,7 +73,7 @@ class BookController: UIViewController {
                     categoryList.append((category["code"] as! String, category["name"] as! String, category["bookCnt"] as! Int));
                 }
             } else {
-                ToastUtil.show(message: result.1);
+                ToastUtil.show(message: result.1, target: view);
             }
         }
         
@@ -99,7 +99,7 @@ class BookController: UIViewController {
                     hotList.append(book);
                 }
             } else {
-                ToastUtil.show(message: result.1);
+                ToastUtil.show(message: result.1, target: view);
             }
         }
         
@@ -162,16 +162,18 @@ class BookController: UIViewController {
             }
             
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
     }
     
      // 搜索
     @IBAction func search(_ sender: Any) {
+        UIApplication.shared.keyWindow?.endEditing(true);
+        
         let key = searchInput.text!;
 
         if key.isEmpty {
-            ToastUtil.show(message: "请输入搜索内容！");
+            ToastUtil.show(message: "请输入搜索内容！", target: view);
             return;
         }
         
@@ -196,12 +198,12 @@ class BookController: UIViewController {
                 resBooks.append(book);
             }
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
             return;
         }
         
         if resBooks.isEmpty {
-            ToastUtil.show(message: "没有符合条件的小说");
+            ToastUtil.show(message: "没有符合条件的小说", target: view);
             return;
         }
         
@@ -234,7 +236,7 @@ class BookController: UIViewController {
                 resBooks.append(book);
             }
         } else {
-            ToastUtil.show(message: result.1);
+            ToastUtil.show(message: result.1, target: view);
         }
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
