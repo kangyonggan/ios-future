@@ -12,14 +12,14 @@ import CoreData
 class DictionaryDao: NSObject {
     
     var managedObjectContext: NSManagedObjectContext!
-    let entityName = "Dictionary";
+    let entityName = "TDictionary";
     
     override init() {
         managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     }
     
     // 保存字典
-    func save(dictionary: MyDictionary) {
+    func save(dictionary: Dictionary) {
         let newDictionary = NSEntityDescription.insertNewObject(forEntityName: entityName, into: managedObjectContext);
         
         newDictionary.setValue(dictionary.type, forKey: "type");
@@ -53,8 +53,8 @@ class DictionaryDao: NSObject {
     }
     
     // 查找某类型的所有字典
-    func findDictionariesBy(type: String) -> [MyDictionary] {
-        var dictionaries = [MyDictionary]();
+    func findDictionariesBy(type: String) -> [Dictionary] {
+        var dictionaries = [Dictionary]();
         do{
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName);
             let predicate = NSPredicate(format: "type=%@", type);
@@ -62,7 +62,7 @@ class DictionaryDao: NSObject {
             let rows = try managedObjectContext.fetch(request) as! [NSManagedObject];
             
             for row in rows {
-                let dict = MyDictionary();
+                let dict = Dictionary();
                 dict.type = (row.value(forKey: "type") as? String)!;
                 dict.key = (row.value(forKey: "key") as? String)!;
                 dict.value = (row.value(forKey: "value") as? String)!;
@@ -77,7 +77,7 @@ class DictionaryDao: NSObject {
     }
     
     // 根据类型和关键字查找字典
-    func findDictionaryBy(type: String, key: String) -> MyDictionary? {
+    func findDictionaryBy(type: String, key: String) -> Dictionary? {
         do{
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName);
             let predicate = NSPredicate(format: "type=%@ AND key=%@", type, key);
@@ -85,7 +85,7 @@ class DictionaryDao: NSObject {
             
             let rows = try managedObjectContext.fetch(request) as! [NSManagedObject];
             
-            let dict = MyDictionary();
+            let dict = Dictionary();
             for row in rows {
                 dict.type = (row.value(forKey: "type") as? String)!;
                 dict.key = (row.value(forKey: "key") as? String)!;

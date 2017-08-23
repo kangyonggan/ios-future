@@ -12,10 +12,14 @@ import Just
 class SectionListController: UITableViewController {
     
     let sectionUrl = "m/book/section";
+    let sectionFavUrl = "m/book/sectionFav";
     var sectionList: [Section]!;
     var currentSectionCode: Int!;
     
     var loadingView: UIActivityIndicatorView!;
+    
+    let sectionDao = SectionDao();
+    var isFavorite: Bool!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -63,12 +67,32 @@ class SectionListController: UITableViewController {
         }
         
         let section = sectionList[indexPath.row]
-    
-        // 启动加载中菊花
-        loadingView = ViewUtil.startLoading(view);
         
-        // 使用异步请求
-        Just.post(AppConstants.DOMAIN + sectionUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: sectionCallback)
+        // 先走缓存，如果缓存有，直接使用(如果是收藏中的书籍，同时异步更新最后阅读章节)
+        // 如果缓存中没有，则调接口
+        let tSection = sectionDao.findSectionBy(code: section.code!);
+        if tSection == nil {
+            // 没缓存，走接口查询
+            
+            // 启动加载中菊花
+            loadingView = ViewUtil.startLoading(view);
+            
+            // 使用异步请求
+            Just.post(AppConstants.DOMAIN + sectionUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: sectionCallback)
+            
+        } else {
+            // 有缓存, 直接显示章节内容
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateSectionDetail"), object: nil, userInfo: ["section": tSection!, "isFavorite": isFavorite]);
+            
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true);
+            }
+            
+            // 如果是收藏中的书籍，同时异步更新最后阅读章节
+            if isFavorite {
+                Just.post(AppConstants.DOMAIN + sectionFavUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], asyncCompletionHandler: nil)
+            }
+        }
 
     }
     

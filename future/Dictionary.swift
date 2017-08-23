@@ -8,7 +8,7 @@
 
 import Foundation
 
-class MyDictionary: NSObject {
+class Dictionary: NSObject {
     
     var type:String?;
     

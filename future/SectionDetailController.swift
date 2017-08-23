@@ -11,10 +11,13 @@ import Just
 
 class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
+    let openCacheKey = "openCache";
     let fontSizeKey = "fontSize";
     let themeKey = "theme";
     
     let sectionUrl = "m/book/section";
+    let sectionCacheUrl = "m/book/sectionCache";
+    let sectionFavUrl = "m/book/sectionFav";
     let addFavoriteUrl = "m/book/addFavorite";
     let removeFavoriteUrl = "m/book/removeFavorite";
     let sectionsUrl = "m/book/sections";
@@ -34,6 +37,10 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     let dictionaryDao = DictionaryDao();
     
     var loadingView: UIActivityIndicatorView!;
+    
+    let sectionDao = SectionDao();
+    
+    var isRunTerminalTask = false;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -95,7 +102,66 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
             return;
         }
         
-        loadSection(code: section.nextSectionCode!)
+        // 先走缓存，如果缓存有，直接使用(如果是收藏中的书籍，同时异步更新最后阅读章节)
+        // 如果缓存中没有，则调接口，如果开启了缓存，后台缓存后面100章
+        let tSection = sectionDao.findSectionBy(code: section.nextSectionCode!);
+        if tSection == nil {
+            // 没缓存，走接口查询
+            loadSection(code: section.nextSectionCode!)
+         
+            // 判断是否是自动缓存，如果是，则后台缓存后面100章
+            let autoCacheDict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: openCacheKey);
+            if autoCacheDict == nil || autoCacheDict?.value! == "1" {
+                // 后台缓存100章，并标志“正在缓存”，防止重复调用后台缓存
+                if !isRunTerminalTask {
+                    isRunTerminalTask = true;
+                    Just.post(AppConstants.DOMAIN + sectionCacheUrl, data: ["sectionCode": String(section.nextSectionCode!)], asyncCompletionHandler: sectionCacheCallback)
+                }
+            }
+        } else {
+            // 有缓存, 直接显示章节内容
+            self.section = tSection;
+            self.updateContent();
+            
+            // 如果是收藏中的书籍，同时异步更新最后阅读章节
+            if isFavorite {
+                Just.post(AppConstants.DOMAIN + sectionFavUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], asyncCompletionHandler: nil)
+            }
+        }
+    }
+    
+    // 缓存请求完成的回调
+    func sectionCacheCallback(res: HTTPResult) {
+        isRunTerminalTask = false;
+        
+        let result = HttpUtil.parse(result: res);
+        if result.0 {
+            var secs = [Section]();
+            let resSections = result.2?["sections"] as! NSArray;
+            for s in resSections {
+                let ss = s as! NSDictionary
+                let section = Section();
+                section.bookCode = ss["bookCode"] as? Int;
+                section.code = ss["code"] as? Int
+                section.content = ss["content"] as? String;
+                section.title = ss["title"] as? String
+                section.prevSectionCode = ss["prevSectionCode"] as? Int
+                section.nextSectionCode = ss["nextSectionCode"] as? Int
+                
+                secs.append(section);
+            }
+            
+            sectionDao.delete(bookCode: self.section.bookCode!);
+            sectionDao.save(sections: secs);
+            
+            DispatchQueue.main.async {
+                ToastUtil.show(message: "后面100章节已经缓存", target: self.view);
+            }
+        } else {
+            DispatchQueue.main.async {
+                ToastUtil.show(message: "网络异常，无法自动缓存后面100章节", target: self.view);
+            }
+        }
     }
     
     // 上一章
@@ -108,7 +174,23 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
             return;
         }
         
-        loadSection(code: section.prevSectionCode!)
+        // 先走缓存，如果缓存有，直接使用(如果是收藏中的书籍，同时异步更新最后阅读章节)
+        // 如果缓存中没有，则调接口
+        let tSection = sectionDao.findSectionBy(code: section.prevSectionCode!);
+        if tSection == nil {
+            // 没缓存，走接口查询
+            loadSection(code: section.prevSectionCode!)
+            
+        } else {
+            // 有缓存, 直接显示章节内容
+            self.section = tSection;
+            self.updateContent();
+            
+            // 如果是收藏中的书籍，同时异步更新最后阅读章节
+            if isFavorite {
+                Just.post(AppConstants.DOMAIN + sectionFavUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], asyncCompletionHandler: nil)
+            }
+        }
     }
     
     // 加载章节
@@ -243,6 +325,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         } else {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
             vc.sectionList = self.sections;
+            vc.isFavorite = self.isFavorite;
             vc.currentSectionCode = self.section.code;
             vc.refreshNav(title: self.bookName);
             self.navigationController?.pushViewController(vc, animated: false);
@@ -277,6 +360,7 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
                 
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
                 vc.sectionList = self.sections;
+                vc.isFavorite = self.isFavorite;
                 vc.currentSectionCode = self.section.code;
                 vc.refreshNav(title: self.bookName);
                 self.navigationController?.pushViewController(vc, animated: false);

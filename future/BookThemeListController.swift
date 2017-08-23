@@ -62,7 +62,7 @@ class BookThemeListController: UITableViewController{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let theme = themes[indexPath.row];
         
-        let dict = MyDictionary();
+        let dict = Dictionary();
         dict.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
         dict.key = themeKey;
         dict.value = theme.1;

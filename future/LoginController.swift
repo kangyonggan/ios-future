@@ -135,14 +135,14 @@ class LoginController: UIViewController {
             dictionaryDao.delete(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: AppConstants.KEY_TOKEN);
             
             // 保存token
-            let dict = MyDictionary();
+            let dict = Dictionary();
             dict.key = AppConstants.KEY_TOKEN;
             dict.value = result.2?["token"] as? String;
             dict.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
             dictionaryDao.save(dictionary: dict);
             
             // 保存手机号
-            let mobile = MyDictionary();
+            let mobile = Dictionary();
             mobile.key = AppConstants.KEY_USERNAME;
             mobile.value = usernameInput.text!;
             mobile.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
