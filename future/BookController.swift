@@ -204,6 +204,10 @@ class BookController: UIViewController {
     
      // 搜索
     @IBAction func search(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
+        
         UIApplication.shared.keyWindow?.endEditing(true);
         
         let key = searchInput.text!;
@@ -216,9 +220,6 @@ class BookController: UIViewController {
         // 启动加载中菊花
         loadingView = ViewUtil.startLoading(view);
         
-        // 禁用搜索按钮
-        searchBtn.isEnabled = false;
-        
         // 使用异步请求
         Just.post(AppConstants.DOMAIN + searchUrl, data: ["key": key], timeout: 5, asyncCompletionHandler: searchCallback)
     }
@@ -228,7 +229,6 @@ class BookController: UIViewController {
         DispatchQueue.main.async {
             self.loadingView.stopAnimating();
             self.loadingView.removeFromSuperview();
-            self.searchBtn.isEnabled = true;
         }
         
         let result = HttpUtil.parse(result: res);
@@ -275,69 +275,102 @@ class BookController: UIViewController {
     
     // 更多推荐
     @IBAction func moreHot(_ sender: Any) {
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + hotUrl, params: ["p": "1", "pageSize": "50"]);
-        
-        var resBooks = [Book]();
-        if result.0 {
-            let books = result.2?["books"] as! NSArray;
-            for b in books {
-                let bk = b as! NSDictionary
-                let book = Book();
-                book.code = bk["code"] as? Int;
-                book.name = bk["name"] as? String;
-                book.author = bk["author"] as? String;
-                book.categoryCode = bk["categoryCode"] as? String;
-                book.categoryName = bk["categoryName"] as? String;
-                book.picUrl = bk["picUrl"] as? String;
-                book.descp = bk["descp"] as? String;
-                book.isFinished = bk["isFinished"] as? Bool;
-                book.descp = bk["descp"] as? String;
-                
-                resBooks.append(book);
-            }
-        } else {
-            ToastUtil.show(message: result.1, target: view);
+        if loadingView != nil && loadingView.isAnimating {
+            return;
         }
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
-        vc.bookList = resBooks;
-        vc.refreshNav(title: "站长推荐");
-        parent?.navigationController?.pushViewController(vc, animated: false);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + hotUrl, data: ["p": "1", "pageSize": "50"], timeout: 5, asyncCompletionHandler: moreHotCallback)
     }
     
-    // 更多收藏
-    @IBAction func moreFavorite(_ sender: Any) {
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + favUrl, params: ["p": "1", "pageSize": "50", "username": UserUtil.getUsername()]);
-        
-        var resBooks = [Book]();
-        if result.0 {
-            let books = result.2?["books"] as! NSArray;
-            for b in books {
-                let bk = b as! NSDictionary
-                let book = Book();
-                book.code = bk["code"] as? Int;
-                book.name = bk["name"] as? String;
-                book.author = bk["author"] as? String;
-                book.categoryCode = bk["categoryCode"] as? String;
-                book.categoryName = bk["categoryName"] as? String;
-                book.picUrl = bk["picUrl"] as? String;
-                book.descp = bk["descp"] as? String;
-                book.isFinished = bk["isFinished"] as? Bool;
-                book.descp = bk["descp"] as? String;
-                book.lastSectionCode = bk["lastSectionCode"] as? Int;
-                
-                resBooks.append(book);
+    // 查看更多推荐的回调
+    func moreHotCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+            
+            let result = HttpUtil.parse(result: res);
+            
+            var resBooks = [Book]();
+            if result.0 {
+                let books = result.2?["books"] as! NSArray;
+                for b in books {
+                    let bk = b as! NSDictionary
+                    let book = Book();
+                    book.code = bk["code"] as? Int;
+                    book.name = bk["name"] as? String;
+                    book.author = bk["author"] as? String;
+                    book.categoryCode = bk["categoryCode"] as? String;
+                    book.categoryName = bk["categoryName"] as? String;
+                    book.picUrl = bk["picUrl"] as? String;
+                    book.descp = bk["descp"] as? String;
+                    book.isFinished = bk["isFinished"] as? Bool;
+                    book.descp = bk["descp"] as? String;
+                    
+                    resBooks.append(book);
+                }
+            } else {
+                ToastUtil.show(message: result.1, target: self.view);
             }
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
             vc.bookList = resBooks;
-            vc.refreshNav(title: "我的收藏");
-            parent?.navigationController?.pushViewController(vc, animated: false);
-            
-        } else {
-            ToastUtil.show(message: result.1, target: view);
+            vc.refreshNav(title: "站长推荐");
+            self.parent?.navigationController?.pushViewController(vc, animated: false);
         }
     }
     
+    // 更多收藏
+    @IBAction func moreFavorite(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + favUrl, data: ["p": "1", "pageSize": "50", "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: moreFavCallback)
+    }
+    
+    // 更多收藏的回调
+    func moreFavCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+            
+            let result = HttpUtil.parse(result: res);
+            
+            var resBooks = [Book]();
+            if result.0 {
+                let books = result.2?["books"] as! NSArray;
+                for b in books {
+                    let bk = b as! NSDictionary
+                    let book = Book();
+                    book.code = bk["code"] as? Int;
+                    book.name = bk["name"] as? String;
+                    book.author = bk["author"] as? String;
+                    book.categoryCode = bk["categoryCode"] as? String;
+                    book.categoryName = bk["categoryName"] as? String;
+                    book.picUrl = bk["picUrl"] as? String;
+                    book.descp = bk["descp"] as? String;
+                    book.isFinished = bk["isFinished"] as? Bool;
+                    book.descp = bk["descp"] as? String;
+                    book.lastSectionCode = bk["lastSectionCode"] as? Int;
+                    
+                    resBooks.append(book);
+                }
+                
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookListController") as! BookListController;
+                vc.bookList = resBooks;
+                vc.refreshNav(title: "我的收藏");
+                self.parent?.navigationController?.pushViewController(vc, animated: false);
+                
+            } else {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
+        }
+    }
     
 }

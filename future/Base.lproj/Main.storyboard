@@ -830,7 +830,6 @@
                                 <state key="normal" title=" "/>
                                 <connections>
                                     <action selector="setting:" destination="mlc-3O-tzG" eventType="touchUpInside" id="RWI-Wg-Ijw"/>
-                                    <segue destination="R7U-9i-bhQ" kind="push" id="grp-Qo-flD"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VYA-sD-dir">
