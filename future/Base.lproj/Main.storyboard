@@ -243,7 +243,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="找回密码" id="Tw5-jS-9kE"/>
+                    <navigationItem key="navigationItem" title="找回密码" id="Tw5-jS-9kE">
+                        <barButtonItem key="backBarButtonItem" title="返回" id="Bwu-ze-2Qh"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="authCodeBtn" destination="OTK-Q3-cFt" id="HOK-FX-NEF"/>
                         <outlet property="authCodeInput" destination="yIu-1U-isX" id="MLh-p4-kOX"/>

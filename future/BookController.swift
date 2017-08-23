@@ -81,6 +81,8 @@ class BookController: UIViewController {
     }
     
     func initView() {
+        parent?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
+        
         // 搜索框
         searchInput.layer.borderWidth = 1;
         searchInput.layer.cornerRadius = 3;

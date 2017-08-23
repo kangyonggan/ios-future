@@ -16,6 +16,7 @@ class BookListController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
     }
     
     func refreshNav(title: String) {

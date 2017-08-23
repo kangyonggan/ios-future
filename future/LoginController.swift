@@ -140,6 +140,7 @@ class LoginController: UIViewController {
     func initView() {
         // 修改返回按钮颜色
         self.navigationController?.navigationBar.tintColor = UIColor.white;
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
         
         // 图片
         imageView.layer.cornerRadius = 25;

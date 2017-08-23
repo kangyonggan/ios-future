@@ -25,6 +25,7 @@ class BookThemeListController: UITableViewController{
     }
     
     func initView() {
+        parent?.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
         let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: themeKey);
         if dict == nil {
             selectedValue = "#FFFFFF";

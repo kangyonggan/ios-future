@@ -37,6 +37,8 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         updateContent();
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateSectionDetail(notification:)), name: NSNotification.Name(rawValue: "updateSectionDetail"), object: nil)
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
     }
     
     // 更新章节内容, 用于接收章节列表的通知

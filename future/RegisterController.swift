@@ -192,7 +192,7 @@ class RegisterController: UIViewController {
         registerBtn.backgroundColor = UIColor.lightGray;
         
         // 焦点
-        usernameInput.becomeFirstResponder();
+//        usernameInput.becomeFirstResponder();
     }
     
     // 手势处理函数

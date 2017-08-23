@@ -28,6 +28,7 @@ class BookSettingController: UIViewController {
     }
     
     func initView() {
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "返回", style: .done, target: nil, action: nil)
         themes = AppConstants.themes();
         
         let dict = dictionaryDao.findDictionaryBy(type: AppConstants.DICTIONERY_TYPE_DEFAULT, key: fontSizeKey);
