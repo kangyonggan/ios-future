@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class CategoryCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -15,6 +16,10 @@ class CategoryCollectionView: UICollectionView, UICollectionViewDelegate, UIColl
     var categories: [(String, String, Int)]!;
     
     var viewController: UIViewController!;
+    
+    var loadingView: UIActivityIndicatorView!;
+    
+    var category: (String, String, Int)!;
     
     func loadData(categories: [(String, String, Int)]) {
         self.delegate = self;
@@ -43,8 +48,28 @@ class CategoryCollectionView: UICollectionView, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let category = categories[indexPath.row];
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + categoryUrl, params: ["code": category.0, "p": "1"]);
+        
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
+        
+        category = categories[indexPath.row];
+        
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(self);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + categoryUrl, data: ["code": category.0, "p": "1"], timeout: 5, asyncCompletionHandler: listCallback)
+    }
+
+    // 回调
+    func listCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         var resBooks = [Book]();
         if result.0 {
@@ -65,20 +90,25 @@ class CategoryCollectionView: UICollectionView, UICollectionViewDelegate, UIColl
                 resBooks.append(book);
             }
         } else {
-            ToastUtil.show(message: result.1, target: self);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self);
+            }
             return;
         }
         
         if resBooks.isEmpty {
-            ToastUtil.show(message: "没有此分类的小说", target: self);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: "没有此分类的小说", target: self);
+            }
             return;
         }
         
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "bookListController") as! BookListController;
-        vc.bookList = resBooks;
-        vc.refreshNav(title: category.1);
-        viewController.navigationController?.pushViewController(vc, animated: false);
+        DispatchQueue.main.async {
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "bookListController") as! BookListController;
+            vc.bookList = resBooks;
+            vc.refreshNav(title: self.category.1);
+            self.viewController.navigationController?.pushViewController(vc, animated: false);
+        }
     }
-
     
 }
