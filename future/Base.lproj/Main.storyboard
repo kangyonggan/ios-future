@@ -829,6 +829,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title=" "/>
                                 <connections>
+                                    <action selector="setting:" destination="mlc-3O-tzG" eventType="touchUpInside" id="RWI-Wg-Ijw"/>
                                     <segue destination="R7U-9i-bhQ" kind="push" id="grp-Qo-flD"/>
                                 </connections>
                             </button>
@@ -908,7 +909,7 @@
         <!--设置-->
         <scene sceneID="Ngd-2A-H6V">
             <objects>
-                <viewController title="设置" id="R7U-9i-bhQ" customClass="BookSettingController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="bookSettingController" title="设置" id="R7U-9i-bhQ" customClass="BookSettingController" customModule="未来" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="paj-ZP-9M4"/>
                         <viewControllerLayoutGuide type="bottom" id="EEy-RE-ZIy"/>

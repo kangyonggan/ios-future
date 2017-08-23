@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Just
 
 class BookListController: UITableViewController {
     
     let lastSectionUrl = "m/book/lastSection";
     
     var bookList: [Book]!;
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -47,9 +50,28 @@ class BookListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
+        
         let book = bookList[indexPath.row]
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + lastSectionUrl, params: ["bookCode": String(book.code!), "username": UserUtil.getUsername()]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + lastSectionUrl, data: ["bookCode": String(book.code!), "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: lastSectionCallback)
+        
+    }
+    
+    // 回调
+    func lastSectionCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
             let sec = result.2!["section"] as! NSDictionary;
@@ -61,12 +83,16 @@ class BookListController: UITableViewController {
             section.prevSectionCode = sec["prevSectionCode"] as? Int
             section.nextSectionCode = sec["nextSectionCode"] as? Int
             
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionDetailController") as! SectionDetailController;
-            vc.section = section;
-            vc.isFavorite = result.2!["favorite"] as! Bool;
-            self.navigationController?.pushViewController(vc, animated: false);
+            DispatchQueue.main.async {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionDetailController") as! SectionDetailController;
+                vc.section = section;
+                vc.isFavorite = result.2!["favorite"] as! Bool;
+                self.navigationController?.pushViewController(vc, animated: false);
+            }
         } else {
-            ToastUtil.show(message: result.1, target: (parent?.view)!);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: (self.parent?.view)!);
+            }
         }
     }
     

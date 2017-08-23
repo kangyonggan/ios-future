@@ -47,6 +47,7 @@
 		11618C731F3EEE8E00EB3CFA /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11618C721F3EEE8E00EB3CFA /* Book.swift */; };
 		11618C851F45485C00EB3CFA /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11618C841F45485C00EB3CFA /* Section.swift */; };
 		11618C8C1F468D2100EB3CFA /* BookListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11618C8B1F468D2100EB3CFA /* BookListController.swift */; };
+		11968E241F4D251300DA130C /* myHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11968E231F4D251300DA130C /* myHUD.swift */; };
 		8DC06CB3E37A704F75F1D26F /* Pods_future.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D8865FEB7D17CE602D349C5 /* Pods_future.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,7 @@
 		11618C721F3EEE8E00EB3CFA /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		11618C841F45485C00EB3CFA /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		11618C8B1F468D2100EB3CFA /* BookListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookListController.swift; sourceTree = "<group>"; };
+		11968E231F4D251300DA130C /* myHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myHUD.swift; sourceTree = "<group>"; };
 		11FFACA6D23EF07F502986C8 /* Pods-future.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.release.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.release.xcconfig"; sourceTree = "<group>"; };
 		3D8865FEB7D17CE602D349C5 /* Pods_future.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_future.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8342076166107CD9B2FD60A4 /* Pods-future.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-future.debug.xcconfig"; path = "Pods/Target Support Files/Pods-future/Pods-future.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				111A7D151F3D803B00A90482 /* ToastUtil.swift */,
 				11618C6B1F3EC4FE00EB3CFA /* StringUtil.swift */,
 				112A5B9E1F481DFC00BCBE5E /* UserUtil.swift */,
+				11968E231F4D251300DA130C /* myHUD.swift */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				112A5B931F47632C00BCBE5E /* FavCollectionView.swift in Sources */,
 				11618C851F45485C00EB3CFA /* Section.swift in Sources */,
 				11618C8C1F468D2100EB3CFA /* BookListController.swift in Sources */,
+				11968E241F4D251300DA130C /* myHUD.swift in Sources */,
 				112A5B951F47636300BCBE5E /* FavCollectionCell.swift in Sources */,
 				11618C731F3EEE8E00EB3CFA /* Book.swift in Sources */,
 				111A7CDD1F3C348F00A90482 /* OtherController.swift in Sources */,

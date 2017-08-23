@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Just
 
 class SectionListController: UITableViewController {
     
     let sectionUrl = "m/book/section";
     var sectionList: [Section]!;
     var currentSectionCode: Int!;
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -55,9 +58,28 @@ class SectionListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = sectionList[indexPath.row]
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionUrl, params: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()]);
+        let section = sectionList[indexPath.row]
+    
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + sectionUrl, data: ["sectionCode": String(section.code!), "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: sectionCallback)
+
+    }
+    
+    // 回调
+    func sectionCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
             let sec = result.2!["section"] as! NSDictionary;
@@ -73,9 +95,13 @@ class SectionListController: UITableViewController {
             
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateSectionDetail"), object: nil, userInfo: ["section": section, "isFavorite": isFavorite]);
             
-            self.navigationController?.popViewController(animated: true);
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true);
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     

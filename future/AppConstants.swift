@@ -11,9 +11,9 @@ import UIKit
 class AppConstants: NSObject {
     
     // 基地址
-        static let DOMAIN = "https://kangyonggan.com/";
+//    static let DOMAIN = "https://kangyonggan.com/";
 //    static let DOMAIN = "http://10.10.10.100:8080/";
-//    static let DOMAIN = "http://127.0.0.1:8080/";
+    static let DOMAIN = "http://127.0.0.1:8080/";
     
     // 字典默认类型
     static let DICTIONERY_TYPE_DEFAULT = "default";

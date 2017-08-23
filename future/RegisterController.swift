@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class RegisterController: UIViewController {
     
@@ -29,6 +30,8 @@ class RegisterController: UIViewController {
     var time = 0;
     
     let dictionaryDao = DictionaryDao();
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -98,7 +101,23 @@ class RegisterController: UIViewController {
             return;
         }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + registerUrl, params: ["username": username, "password":password, "authCode": authCode]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + registerUrl, data: ["username": username, "password":password, "authCode": authCode], timeout: 5, asyncCompletionHandler: registerCallback)
+        
+        
+    }
+    
+    // 注册回调
+    func registerCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
             // 删除老的token
@@ -112,10 +131,14 @@ class RegisterController: UIViewController {
             dictionaryDao.save(dictionary: dict);
             
             // 跳转到注册成功界面
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "registerSuccessController");
-            self.navigationController?.pushViewController(vc!, animated: true);
+            DispatchQueue.main.async {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "registerSuccessController");
+                self.navigationController?.pushViewController(vc!, animated: true);
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     
@@ -127,31 +150,51 @@ class RegisterController: UIViewController {
             return;
         }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "REGISTER"]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        self.registerBtn.isEnabled = false;
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + authCodeUrl, data: ["mobile": username, "type": "REGISTER"], timeout: 5, asyncCompletionHandler: authCodeCallback)
+    }
+
+    // 获取验证码回调
+    func authCodeCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+            self.registerBtn.isEnabled = true;
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
-            ToastUtil.show(message: "获取验证码成功", target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: "获取验证码成功", target: self.view);
             
-            time = 0;
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateAuthCodeBtn), userInfo: nil, repeats: true);
-            authCodeBtn.isEnabled = false;
-            authCodeBtn.backgroundColor = UIColor.lightGray;
+                self.time = 0;
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateAuthCodeBtn), userInfo: nil, repeats: true);
+                self.authCodeBtn.isEnabled = false;
+                self.authCodeBtn.backgroundColor = UIColor.lightGray;
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     
     // 更新获取验证码按钮
     func updateAuthCodeBtn() {
-        time += 1;
-        authCodeBtn.setTitle("\(60-time)秒", for: UIControlState.normal);
-        
-        if (time > 60) {
-            time = 0;
-            authCodeBtn.isEnabled = true;
-            authCodeBtn.backgroundColor = AppConstants.MASTER_COLOR;
-            timer?.invalidate();
-            authCodeBtn.setTitle("重新获取", for: UIControlState.normal);
+        self.time += 1;
+        self.authCodeBtn.setTitle("\(60-self.time)秒", for: UIControlState.normal);
+            
+        if (self.time > 60) {
+            self.time = 0;
+            self.authCodeBtn.isEnabled = true;
+            self.authCodeBtn.backgroundColor = AppConstants.MASTER_COLOR;
+            self.timer?.invalidate();
+            self.authCodeBtn.setTitle("重新获取", for: UIControlState.normal);
         }
     }
     

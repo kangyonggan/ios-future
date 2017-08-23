@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class ForgotController: UIViewController {
     
@@ -27,6 +28,8 @@ class ForgotController: UIViewController {
     
     var timer: Timer?;
     var time = 0;
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -82,17 +85,35 @@ class ForgotController: UIViewController {
             return;
         }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + authCodeUrl, params: ["mobile": username, "type": "FORGOT"]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + authCodeUrl, data: ["mobile": username, "type": "FORGOT"], timeout: 5, asyncCompletionHandler: authCodeCallback)
+    }
+    
+    // 获取验证码回调
+    func authCodeCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
-            ToastUtil.show(message: "获取验证码成功", target: view);
-            
-            time = 0;
-            authCodeBtn.isEnabled = false;
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateAuthCodeBtn), userInfo: nil, repeats: true);
-            authCodeBtn.backgroundColor = UIColor.lightGray;
+            DispatchQueue.main.async {
+                ToastUtil.show(message: "获取验证码成功", target: self.view);
+                
+                self.time = 0;
+                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateAuthCodeBtn), userInfo: nil, repeats: true);
+                self.authCodeBtn.isEnabled = false;
+                self.authCodeBtn.backgroundColor = UIColor.lightGray;
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     
@@ -131,14 +152,34 @@ class ForgotController: UIViewController {
             return;
         }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + forgotUrl, params: ["username": username, "authCode": authCode, "password": password]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        self.nextStepBtn.isEnabled = false;
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + forgotUrl, data: ["username": username, "authCode": authCode, "password": password], timeout: 5, asyncCompletionHandler: forgotCallback)
+    }
+    
+    // 找回密码回调
+    func forgotCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+            self.nextStepBtn.isEnabled = true;
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
             // 跳转到更新密码成功界面
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "updatePasswordSuccessController");
-            self.navigationController?.pushViewController(vc!, animated: true);
+            DispatchQueue.main.async {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "updatePasswordSuccessController");
+                self.navigationController?.pushViewController(vc!, animated: true);
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     

@@ -46,11 +46,15 @@ class ViewUtil: NSObject {
         view.addSubview(line);
     }
     
-    // 获取加载中图标
-    static func loadingView(center: CGPoint) -> UIActivityIndicatorView {
+    // 加载中
+    static func startLoading(_ fromParentView: UIView) -> UIActivityIndicatorView {
         let loadingView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         loadingView.color = AppConstants.MASTER_COLOR
-        loadingView.center = center;
+        loadingView.center = fromParentView.center;
+        loadingView.hidesWhenStopped = true;
+        
+        fromParentView.addSubview(loadingView)
+        loadingView.startAnimating();
         
         return loadingView;
     }

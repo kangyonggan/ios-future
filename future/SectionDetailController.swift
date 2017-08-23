@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
@@ -24,11 +25,15 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     var sections = [Section]();
     var bookName: String!;
     
+    var msg: String!;
+    
     @IBOutlet weak var webView: UIWebView!
     
     @IBOutlet weak var favoriteBtn: UIBarButtonItem!
     
     let dictionaryDao = DictionaryDao();
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -82,6 +87,9 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     // 下一章
     @IBAction func nextSextion(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
         if (section.nextSectionCode == 0) {
             ToastUtil.show(message: "已经是最后一章了", target: view);
             return;
@@ -92,6 +100,9 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     // 上一章
     @IBAction func prevSection(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
         if (section.prevSectionCode == 0) {
             ToastUtil.show(message: "已经是第一章了", target: view);
             return;
@@ -102,36 +113,52 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
     
     // 加载章节
     func loadSection(code: Int) {
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionUrl, params: ["sectionCode": String(code), "username": UserUtil.getUsername()]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
         
-        if result.0 {
-            let sec = result.2!["section"] as! NSDictionary;
-            self.isFavorite = result.2!["favorite"] as! Bool;
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + sectionUrl, data: ["sectionCode": String(code), "username": UserUtil.getUsername()], timeout: 5, asyncCompletionHandler: sectionCallback)
+    }
+    
+    // 加载章节的回调
+    func sectionCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
+        
+        DispatchQueue.main.async {
+            if result.0 {
+                let sec = result.2!["section"] as! NSDictionary;
+                self.isFavorite = result.2!["favorite"] as! Bool;
             
-            let section = Section();
-            section.bookCode = sec["bookCode"] as? Int;
-            section.code = sec["code"] as? Int
-            section.content = sec["content"] as? String;
-            section.title = sec["title"] as? String
-            section.prevSectionCode = sec["prevSectionCode"] as? Int
-            section.nextSectionCode = sec["nextSectionCode"] as? Int
+                let section = Section();
+                section.bookCode = sec["bookCode"] as? Int;
+                section.code = sec["code"] as? Int
+                section.content = sec["content"] as? String;
+                section.title = sec["title"] as? String
+                section.prevSectionCode = sec["prevSectionCode"] as? Int
+                section.nextSectionCode = sec["nextSectionCode"] as? Int
             
-            self.section = section;
-            updateContent();
-        } else {
-            ToastUtil.show(message: result.1, target: view);
+                self.section = section;
+                self.updateContent();
+            } else {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
     }
     
     func updateContent() {
-        self.navigationItem.title = section.title;
-        webView.loadHTMLString(section.content!, baseURL: nil);
+        self.navigationItem.title = self.section.title;
+        webView.loadHTMLString(self.section.content!, baseURL: nil);
         
         // 设置是否是收藏的图标
-        if isFavorite {
-            favoriteBtn.image = UIImage(named: "favorite");
+        if self.isFavorite {
+            self.favoriteBtn.image = UIImage(named: "favorite");
         } else {
-            favoriteBtn.image = UIImage(named: "disFavorite");
+            self.favoriteBtn.image = UIImage(named: "disFavorite");
         }
     }
     
@@ -140,11 +167,22 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
         webView.stringByEvaluatingJavaScript(from: "document.getElementsByTagName('body')[0].style.webkitTextFillColor='#555555'");
     }
     
+    // 设置主题字体
+    @IBAction func setting(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "bookSettingController");
+        self.navigationController?.pushViewController(vc!, animated: false);
+    }
+    
     // 收藏/取消收藏
     @IBAction func favoriteBook(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
         var url: String!;
-        
-        var msg: String!;
         var params: [String: String]!;
         if isFavorite {
             url = removeFavoriteUrl;
@@ -157,30 +195,72 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
             
             params = ["bookCode": String(section.bookCode!), "username": UserUtil.getUsername(), "lastSectionCode": String(section.code!)];
         }
+    
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + url, params: params);
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + url, data: params, timeout: 5, asyncCompletionHandler: favCallback)
+    }
+    
+    // 收藏的回调
+    func favCallback(res: HTTPResult) {
         
-        if result.0 {
-            if isFavorite {
-                favoriteBtn.image = UIImage(named: "disFavorite");
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating()
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
+        
+        DispatchQueue.main.async {
+            if result.0 {
+                if self.isFavorite {
+                    self.favoriteBtn.image = UIImage(named: "disFavorite");
+                } else {
+                    self.favoriteBtn.image = UIImage(named: "favorite");
+                }
+                
+                self.isFavorite = !self.isFavorite;
+                ToastUtil.show(message: self.msg, target: self.view);
             } else {
-                favoriteBtn.image = UIImage(named: "favorite");
+                ToastUtil.show(message: result.1, target: self.view);
             }
-            
-            isFavorite = !isFavorite;
-            ToastUtil.show(message: msg, target: view);
-        } else {
-            ToastUtil.show(message: result.1, target: view);
         }
     }
     
     // 章节列表
     @IBAction func sectionList(_ sender: Any) {
+        if loadingView != nil && loadingView.isAnimating {
+            return;
+        }
         if sections.isEmpty {
-            let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + sectionsUrl, params: ["bookCode": String(section.bookCode!)]);
+            // 启动加载中菊花
+            loadingView = ViewUtil.startLoading(view);
             
+            // 使用异步请求
+            Just.post(AppConstants.DOMAIN + sectionsUrl, data: ["bookCode": String(section.bookCode!)], timeout: 5, asyncCompletionHandler: sectionsCallback)
+        } else {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
+            vc.sectionList = self.sections;
+            vc.currentSectionCode = self.section.code;
+            vc.refreshNav(title: self.bookName);
+            self.navigationController?.pushViewController(vc, animated: false);
+        }
+    }
+    
+    // 加载章节列表的回调
+    func sectionsCallback(res: HTTPResult) {
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+        }
+        
+        let result = HttpUtil.parse(result: res);
+        
+        DispatchQueue.main.async {
             if result.0 {
-                bookName = result.2?["bookName"] as! String;
+                self.bookName = result.2?["bookName"] as! String;
                 let resSections = result.2?["sections"] as! NSArray;
                 for s in resSections {
                     let ss = s as! NSDictionary
@@ -192,19 +272,18 @@ class SectionDetailController: UIViewController, UIWebViewDelegate  {
                     section.prevSectionCode = ss["prevSectionCode"] as? Int
                     section.nextSectionCode = ss["nextSectionCode"] as? Int
                     
-                    sections.append(section);
+                    self.sections.append(section);
                 }
+                
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
+                vc.sectionList = self.sections;
+                vc.currentSectionCode = self.section.code;
+                vc.refreshNav(title: self.bookName);
+                self.navigationController?.pushViewController(vc, animated: false);
             } else {
-                ToastUtil.show(message: result.1, target: view);
-                return;
+                ToastUtil.show(message: result.1, target: self.view);
             }
         }
-        
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "sectionListController") as! SectionListController;
-        vc.sectionList = sections;
-        vc.currentSectionCode = section.code;
-        vc.refreshNav(title: bookName);
-        self.navigationController?.pushViewController(vc, animated: false);
     }
     
 }

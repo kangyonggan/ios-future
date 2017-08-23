@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Just
 
 class LoginController: UIViewController {
     
@@ -27,6 +28,8 @@ class LoginController: UIViewController {
     var isShowPassword = false;
     
     let dictionaryDao = DictionaryDao();
+    
+    var loadingView: UIActivityIndicatorView!;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,7 +111,24 @@ class LoginController: UIViewController {
             return;
         }
         
-        let result = HttpUtil.sendPost(url: AppConstants.DOMAIN + loginUrl, params: ["username": username, "password":password]);
+        // 启动加载中菊花
+        loadingView = ViewUtil.startLoading(view);
+        loginBtn.isEnabled = false;
+        
+        // 使用异步请求
+        Just.post(AppConstants.DOMAIN + loginUrl, data: ["username": username, "password":password], timeout: 5, asyncCompletionHandler: loginCallback)
+    }
+    
+    // 登录请求回调
+    func loginCallback(res: HTTPResult) {
+        // 在主线程中操作UI，使菊花停止
+        DispatchQueue.main.async {
+            self.loadingView.stopAnimating();
+            self.loadingView.removeFromSuperview();
+            self.loginBtn.isEnabled = true;
+        }
+        
+        let result = HttpUtil.parse(result: res);
         
         if result.0 {
             // 删除老的token
@@ -124,16 +144,21 @@ class LoginController: UIViewController {
             // 保存手机号
             let mobile = MyDictionary();
             mobile.key = AppConstants.KEY_USERNAME;
-            mobile.value = username;
+            mobile.value = usernameInput.text!;
             mobile.type = AppConstants.DICTIONERY_TYPE_DEFAULT;
             dictionaryDao.save(dictionary: mobile);
             
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
-            self.navigationController?.pushViewController(vc!, animated: true);
+            // 在主线程中操作UI，跳转界面
+            DispatchQueue.main.async {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "myTabBarController");
+                self.navigationController?.pushViewController(vc!, animated: true);
+            }
         } else {
-            ToastUtil.show(message: result.1, target: view);
+            // 在主线程中操作UI，提示用户
+            DispatchQueue.main.async {
+                ToastUtil.show(message: result.1, target: self.view);
+            }
         }
-        
     }
     
     // 初始化界面
